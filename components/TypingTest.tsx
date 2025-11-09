@@ -5,11 +5,11 @@ import { supabase } from '@/lib/supabase'
 
 const texts = [
   "Muhib is the coolest person at Waterloo, no cap! He types faster than light and codes like a wizard. When he's not busy being awesome, he's probably thinking about how cool he is.",
-  "Waterloo is the best university in Canada, and we're not just saying that because we go here. The co-op program is legendary, and the geese are... well, they're geese. But hey, at least we're not in San Francisco where everything costs a million dollars!",
+  "Waterloo is the best university in Canada, and we're not just saying that because we go here. The co-op program is legendary, and the geese are... well, they're geese. But hey, at least we're not in Toronto where everything costs a million dollars!",
   "San Francisco? More like San Fran-sisco where your rent is higher than your GPA! At least in Waterloo, we can afford to eat AND pay tuition. California is bust, but Waterloo is the best!",
   "Why did the Waterloo student cross the road? To get to the other side of the co-op term! Muhib would definitely approve of this joke because he's cool like that.",
-  "Waterloo students don't just type fast, we type with purpose. We type assignments, we type code, we type emails to our co-op employers. And Muhib? He types so fast he breaks the sound barrier.",
-  "California dreaming? More like California screaming when you see the rent prices! In Waterloo, we have affordable housing and Muhib being cool. That's a win-win situation right there.",
+  "Waterloo students don't just type fast, we type with purpose. We type assignments, we type code, we type emails to our co-op employers.",
+  "California dreaming? More like California screaming when you see the rent prices! In Waterloo, we have affordable housing (totally not lying) and Muhib being cool. That's a win-win situation right there.",
   "The best typers in Waterloo know that speed isn't everything - it's about accuracy, style, and being as cool as Muhib. He's basically the typing equivalent of a rock star.",
   "San Francisco has the Golden Gate Bridge, but Waterloo has the Golden Typers. And the coolest one? You guessed it - Muhib! He's so cool, even the geese respect him.",
 ]

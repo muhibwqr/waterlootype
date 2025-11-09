@@ -6,6 +6,8 @@ import TypingTest from '@/components/TypingTest'
 import Leaderboard from '@/components/Leaderboard'
 import Auth from '@/components/Auth'
 
+export const dynamic = 'force-dynamic'
+
 export default function Home() {
   const [session, setSession] = useState<any>(null)
   const [loading, setLoading] = useState(true)
