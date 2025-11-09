@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
-const faculties = [
+const faculties: readonly string[] = [
   'Mathematics',
   'Engineering',
   'Arts',
@@ -13,14 +13,14 @@ const faculties = [
   'Applied Health Sciences',
 ]
 
-export default function Auth() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [program, setProgram] = useState('')
-  const [faculty, setFaculty] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState('')
-  const [isSignUp, setIsSignUp] = useState(false)
+export default function Auth(): JSX.Element {
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [program, setProgram] = useState<string>('')
+  const [faculty, setFaculty] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const [message, setMessage] = useState<string>('')
+  const [isSignUp, setIsSignUp] = useState<boolean>(false)
 
   const validateEmail = (email: string) => {
     return email.endsWith('@uwaterloo.ca')
@@ -44,11 +44,12 @@ export default function Auth() {
 
     try {
       if (isSignUp) {
+        const redirectUrl = typeof window !== 'undefined' ? window.location.origin : ''
         const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}`,
+            emailRedirectTo: redirectUrl,
             data: {
               program,
               faculty,

@@ -5,12 +5,13 @@ import { supabase } from '@/lib/supabase'
 import TypingTest from '@/components/TypingTest'
 import Leaderboard from '@/components/Leaderboard'
 import LandingPage from '@/components/LandingPage'
+import type { Session } from '@supabase/supabase-js'
 
 export const dynamic = 'force-dynamic'
 
-export default function Home() {
-  const [session, setSession] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+export default function Home(): JSX.Element {
+  const [session, setSession] = useState<Session | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -93,7 +94,7 @@ export default function Home() {
           Sign Out
         </button>
       </div>
-      <TypingTest user={session.user} />
+      <TypingTest user={session.user as import('@/types/supabase').TypedUser} />
       <Leaderboard />
     </main>
   )

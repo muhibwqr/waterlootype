@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
+import type { TypedUser } from '@/types/supabase'
 
-const texts = [
+const texts: readonly string[] = [
   "Waterloo co-op is the ultimate hustle. Six work terms, endless applications, and the dream of landing that Cali or bust internship. We grind through LeetCode, polish our resumes, and type cover letters faster than we type code.",
   "California or bust! That's the Waterloo motto. Every CS and engineering student dreams of that Silicon Valley co-op. The rent might be insane, but the experience is priceless. Plus, you can always come back to Waterloo where geese are the only thing trying to attack you.",
   "The co-op hustle never stops at Waterloo. While other students are on break, we're applying to jobs, doing interviews, and preparing for our next work term. It's exhausting, but it's also how we graduate with two years of experience.",
@@ -14,14 +15,13 @@ const texts = [
   "California or bust isn't just a phrase, it's a mindset. Every Waterloo student knows someone who made it to the Bay Area. We see the success stories, we read the blog posts, and we dream of being next.",
   "The co-op application season is more stressful than finals. We refresh our emails constantly, practice coding problems daily, and hope our resume stands out among thousands. But when you get that offer, it's all worth it.",
   "Waterloo geese are more aggressive than tech recruiters, but at least the recruiters pay you. We navigate campus dodging geese and navigate life chasing internships. Both require skill, determination, and a bit of luck.",
-  
-]
+] as const
 
 interface TypingTestProps {
-  user: any
+  user: TypedUser
 }
 
-export default function TypingTest({ user }: TypingTestProps) {
+export default function TypingTest({ user }: TypingTestProps): JSX.Element {
   const [text, setText] = useState('')
   const [userInput, setUserInput] = useState('')
   const [startTime, setStartTime] = useState<number | null>(null)

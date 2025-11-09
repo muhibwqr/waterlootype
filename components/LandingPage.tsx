@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import Auth from './Auth'
 
-export default function LandingPage() {
-  const [showAuth, setShowAuth] = useState(false)
+export default function LandingPage(): JSX.Element {
+  const [showAuth, setShowAuth] = useState<boolean>(false)
 
   if (showAuth) {
     return <Auth />

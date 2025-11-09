@@ -2,26 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import type { LeaderboardEntry, FacultyEntry } from '@/types/database'
 
-interface LeaderboardEntry {
-  id: string
-  email: string
-  program?: string
-  faculty?: string
-  wpm: number
-  accuracy: number
-  created_at: string
-  rank?: number
-}
-
-interface FacultyEntry {
-  faculty: string
-  avgWpm: number
-  count: number
-  rank?: number
-}
-
-export default function Leaderboard() {
+export default function Leaderboard(): JSX.Element {
   const [individualEntries, setIndividualEntries] = useState<LeaderboardEntry[]>([])
   const [facultyEntries, setFacultyEntries] = useState<FacultyEntry[]>([])
   const [loading, setLoading] = useState(true)
