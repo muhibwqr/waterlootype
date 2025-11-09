@@ -100,10 +100,10 @@ export default function Leaderboard(): JSX.Element {
   }
 
   const getRankColor = (rank: number): string => {
-    if (rank === 1) return 'from-cyan-500/20 to-blue-500/20 border-cyan-500/30'
-    if (rank === 2) return 'from-yellow-500/20 to-amber-500/20 border-yellow-500/30'
-    if (rank === 3) return 'from-orange-500/20 to-red-500/20 border-orange-500/30'
-    return 'from-gray-800 to-gray-900 border-gray-700'
+    if (rank === 1) return 'from-cyan-500/30 via-blue-500/20 to-purple-500/30 border-cyan-400/40 shadow-lg shadow-cyan-500/20'
+    if (rank === 2) return 'from-yellow-500/30 via-amber-500/20 to-orange-500/30 border-yellow-400/40 shadow-lg shadow-yellow-500/20'
+    if (rank === 3) return 'from-orange-500/30 via-red-500/20 to-pink-500/30 border-orange-400/40 shadow-lg shadow-orange-500/20'
+    return 'from-gray-800/50 to-gray-900/50 border-gray-700/50'
   }
 
   const handleShare = async (entry: LeaderboardEntry): Promise<void> => {
@@ -129,9 +129,9 @@ export default function Leaderboard(): JSX.Element {
 
   if (loading) {
     return (
-      <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800 p-8">
+      <div className="relative bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-800/80 backdrop-blur-xl rounded-3xl border border-gray-700/50 p-8 shadow-2xl shadow-blue-500/10">
         <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-500/30 border-t-blue-500"></div>
           <p className="mt-4 text-gray-400">Loading leaderboard...</p>
         </div>
       </div>
@@ -139,29 +139,40 @@ export default function Leaderboard(): JSX.Element {
   }
 
   return (
-    <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800 p-6 md:p-8">
+    <div className="relative bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-800/80 backdrop-blur-xl rounded-3xl border border-gray-700/50 p-6 md:p-8 shadow-2xl shadow-purple-500/10">
+      {/* Animated border glow */}
+      <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-600/20 via-blue-600/20 to-cyan-600/20 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"></div>
+      
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-4 text-white">Leaderboard</h2>
-        <div className="flex gap-2 border-b border-gray-800">
+        <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          Leaderboard
+        </h2>
+        <div className="flex gap-2 border-b border-gray-700/50">
           <button
             onClick={() => setActiveTab('individuals')}
-            className={`px-4 py-2 font-medium transition-colors ${
+            className={`relative px-6 py-3 font-semibold transition-all duration-300 ${
               activeTab === 'individuals'
-                ? 'text-blue-400 border-b-2 border-blue-400'
+                ? 'text-blue-400'
                 : 'text-gray-400 hover:text-gray-300'
             }`}
           >
             Top Individuals
+            {activeTab === 'individuals' && (
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400"></span>
+            )}
           </button>
           <button
             onClick={() => setActiveTab('faculties')}
-            className={`px-4 py-2 font-medium transition-colors ${
+            className={`relative px-6 py-3 font-semibold transition-all duration-300 ${
               activeTab === 'faculties'
-                ? 'text-blue-400 border-b-2 border-blue-400'
+                ? 'text-blue-400'
                 : 'text-gray-400 hover:text-gray-300'
             }`}
           >
             Top Faculties
+            {activeTab === 'faculties' && (
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400"></span>
+            )}
           </button>
         </div>
       </div>
@@ -177,30 +188,30 @@ export default function Leaderboard(): JSX.Element {
             individualEntries.map((entry) => (
               <div
                 key={entry.id}
-                className={`bg-gradient-to-r ${getRankColor(entry.rank || 0)} rounded-xl border p-4 transition-all hover:scale-[1.02]`}
+                className={`relative bg-gradient-to-r ${getRankColor(entry.rank || 0)} rounded-2xl border backdrop-blur-sm p-5 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4 flex-1">
-                    <div className="text-2xl font-bold w-12 text-center">
+                    <div className="text-3xl font-bold w-14 text-center drop-shadow-lg">
                       {getRankIcon(entry.rank || 0)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-white font-medium truncate">{entry.email}</div>
+                      <div className="text-white font-semibold truncate text-lg">{entry.email}</div>
                       <div className="text-sm text-gray-400 truncate">{entry.program || 'N/A'}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-6">
                     <div className="text-right">
-                      <div className="text-2xl font-bold text-white">{entry.wpm}</div>
-                      <div className="text-xs text-gray-400">WPM</div>
+                      <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">{entry.wpm}</div>
+                      <div className="text-xs text-gray-400 uppercase tracking-wider">WPM</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-semibold text-gray-300">{entry.accuracy.toFixed(1)}%</div>
-                      <div className="text-xs text-gray-400">Accuracy</div>
+                      <div className="text-xl font-semibold bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">{entry.accuracy.toFixed(1)}%</div>
+                      <div className="text-xs text-gray-400 uppercase tracking-wider">Accuracy</div>
                     </div>
                     <button
                       onClick={() => handleShare(entry)}
-                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+                      className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-xl text-sm font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/50"
                     >
                       Share
                     </button>
@@ -220,21 +231,21 @@ export default function Leaderboard(): JSX.Element {
             facultyEntries.map((entry) => (
               <div
                 key={entry.faculty}
-                className={`bg-gradient-to-r ${getRankColor(entry.rank || 0)} rounded-xl border p-4 transition-all hover:scale-[1.02]`}
+                className={`relative bg-gradient-to-r ${getRankColor(entry.rank || 0)} rounded-2xl border backdrop-blur-sm p-5 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4 flex-1">
-                    <div className="text-2xl font-bold w-12 text-center">
+                    <div className="text-3xl font-bold w-14 text-center drop-shadow-lg">
                       {getRankIcon(entry.rank || 0)}
                     </div>
                     <div>
-                      <div className="text-white font-semibold text-lg">{entry.faculty}</div>
+                      <div className="text-white font-semibold text-xl">{entry.faculty}</div>
                       <div className="text-sm text-gray-400">{entry.count} participant{entry.count !== 1 ? 's' : ''}</div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-3xl font-bold text-white">{entry.avgWpm}</div>
-                    <div className="text-xs text-gray-400">Avg WPM</div>
+                    <div className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">{entry.avgWpm}</div>
+                    <div className="text-xs text-gray-400 uppercase tracking-wider">Avg WPM</div>
                   </div>
                 </div>
               </div>

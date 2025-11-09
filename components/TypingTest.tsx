@@ -117,33 +117,43 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
 
   const getCharClass = (index: number): string => {
     if (index >= userInput.length) return 'text-gray-500'
-    if (userInput[index] === text[index]) return 'text-green-400'
+    if (userInput[index] === text[index]) return 'text-emerald-400'
     return 'text-red-400 bg-red-500/20'
   }
 
   return (
-    <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800 p-6 md:p-8 mb-8">
+    <div className="relative bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-800/80 backdrop-blur-xl rounded-3xl border border-gray-700/50 p-6 md:p-8 mb-8 shadow-2xl shadow-blue-500/10">
+      {/* Animated border glow */}
+      <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"></div>
+      
       <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex gap-8">
-          <div>
-            <div className="text-sm text-gray-400 mb-1">WPM</div>
-            <div className="text-3xl font-bold text-white">{wpm}</div>
+          <div className="relative">
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-lg blur opacity-30 animate-pulse"></div>
+            <div className="relative bg-gray-900/80 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50">
+              <div className="text-xs text-gray-400 mb-1 uppercase tracking-wider">WPM</div>
+              <div className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">{wpm}</div>
+            </div>
           </div>
-          <div>
-            <div className="text-sm text-gray-400 mb-1">Accuracy</div>
-            <div className="text-3xl font-bold text-white">{accuracy.toFixed(1)}%</div>
+          <div className="relative">
+            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-600 to-green-400 rounded-lg blur opacity-30 animate-pulse"></div>
+            <div className="relative bg-gray-900/80 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50">
+              <div className="text-xs text-gray-400 mb-1 uppercase tracking-wider">Accuracy</div>
+              <div className="text-4xl font-bold bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">{accuracy.toFixed(1)}%</div>
+            </div>
           </div>
         </div>
         <button
           onClick={resetTest}
-          className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+          className="relative px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/50 hover:shadow-blue-500/70"
         >
-          New Test
+          <span className="relative z-10">New Test</span>
+          <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 hover:opacity-100 blur-xl transition-opacity"></div>
         </button>
       </div>
 
       <div className="mb-4">
-        <div className="text-lg leading-relaxed p-6 bg-gray-950/50 rounded-xl border border-gray-800 min-h-[150px] font-mono">
+        <div className="text-lg leading-relaxed p-6 bg-gray-950/70 backdrop-blur-sm rounded-2xl border border-gray-700/50 min-h-[150px] font-mono shadow-inner">
           {text.split('').map((char, index) => (
             <span key={index} className={getCharClass(index)}>
               {char === ' ' ? '\u00A0' : char}
@@ -159,14 +169,15 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
         onPaste={(e) => e.preventDefault()}
         disabled={isComplete}
         placeholder={isComplete ? 'Test complete! Click "New Test" to try again.' : 'Start typing...'}
-        className="w-full p-6 text-lg bg-gray-950/50 border-2 border-gray-800 rounded-xl focus:border-blue-500 focus:outline-none resize-none min-h-[120px] text-white placeholder-gray-500 font-mono"
+        className="w-full p-6 text-lg bg-gray-950/70 backdrop-blur-sm border-2 border-gray-700/50 rounded-2xl focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 focus:outline-none resize-none min-h-[120px] text-white placeholder-gray-500 font-mono transition-all duration-300 shadow-lg"
         autoFocus
       />
 
       {isComplete && (
-        <div className="mt-4 p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
-          <p className="text-green-400 font-semibold">
-            ✓ Test Complete! Your score has been saved to the leaderboard.
+        <div className="mt-4 p-4 bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-500/30 rounded-2xl backdrop-blur-sm animate-pulse-glow">
+          <p className="text-emerald-400 font-semibold flex items-center gap-2">
+            <span className="text-2xl">✨</span>
+            <span>Test Complete! Your score has been saved to the leaderboard.</span>
           </p>
         </div>
       )}

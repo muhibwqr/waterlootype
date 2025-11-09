@@ -15,10 +15,10 @@ export default function LandingPage(): JSX.Element {
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-6xl font-bold text-white mb-4">
+          <h1 className="text-7xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">
             WaterlooType
           </h1>
-          <p className="text-2xl text-gray-300 mb-2">
+          <p className="text-2xl text-gray-300 mb-2 font-semibold">
             The Typing Test for UWaterloo Warriors
           </p>
           <p className="text-lg text-gray-400">
@@ -30,32 +30,33 @@ export default function LandingPage(): JSX.Element {
         <div className="text-center mb-16">
           <button
             onClick={() => setShowAuth(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-xl font-bold transition-all transform hover:scale-105 shadow-2xl"
+            className="relative px-10 py-5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-500 hover:via-purple-500 hover:to-pink-500 text-white rounded-2xl text-xl font-bold transition-all duration-300 transform hover:scale-110 shadow-2xl shadow-purple-500/50 hover:shadow-purple-500/70"
           >
-            Get Started - It's Free! 🚀
+            <span className="relative z-10">Get Started - It's Free! 🚀</span>
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 opacity-0 hover:opacity-100 blur-xl transition-opacity"></div>
           </button>
         </div>
 
         {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-8 mb-16 max-w-5xl mx-auto">
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-800">
-            <div className="text-4xl mb-4">⚡</div>
+          <div className="relative bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-800/80 backdrop-blur-xl rounded-2xl p-6 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-blue-500/20">
+            <div className="text-5xl mb-4">⚡</div>
             <h3 className="text-xl font-bold text-white mb-2">Test Your Speed</h3>
             <p className="text-gray-400">
               Practice with Waterloo-themed texts about co-op, internships, and the Cali or bust grind.
             </p>
           </div>
 
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-800">
-            <div className="text-4xl mb-4">🏆</div>
+          <div className="relative bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-800/80 backdrop-blur-xl rounded-2xl p-6 border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-purple-500/20">
+            <div className="text-5xl mb-4">🏆</div>
             <h3 className="text-xl font-bold text-white mb-2">Compete & Climb</h3>
             <p className="text-gray-400">
               See where you rank among Waterloo students. Top 3 get Diamond, Gold, and Bronze badges!
             </p>
           </div>
 
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-800">
-            <div className="text-4xl mb-4">🎓</div>
+          <div className="relative bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-800/80 backdrop-blur-xl rounded-2xl p-6 border border-gray-700/50 hover:border-pink-500/50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-pink-500/20">
+            <div className="text-5xl mb-4">🎓</div>
             <h3 className="text-xl font-bold text-white mb-2">Faculty Pride</h3>
             <p className="text-gray-400">
               Represent your faculty! See which faculty has the fastest typers on average.
@@ -130,9 +131,10 @@ export default function LandingPage(): JSX.Element {
         <div className="text-center mt-16">
           <button
             onClick={() => setShowAuth(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-5 rounded-xl text-xl font-bold transition-all transform hover:scale-105 shadow-2xl"
+            className="relative px-10 py-5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-500 hover:via-purple-500 hover:to-pink-500 text-white rounded-2xl text-xl font-bold transition-all duration-300 transform hover:scale-110 shadow-2xl shadow-purple-500/50 hover:shadow-purple-500/70"
           >
-            Start Typing Now! ⌨️
+            <span className="relative z-10">Start Typing Now! ⌨️</span>
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 opacity-0 hover:opacity-100 blur-xl transition-opacity"></div>
           </button>
           <p className="text-gray-400 mt-4 text-sm">
             Only @uwaterloo.ca emails allowed • Free forever
