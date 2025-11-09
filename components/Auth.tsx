@@ -75,18 +75,18 @@ export default function Auth(): JSX.Element {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-purple-900">
-      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center mb-2 text-gray-800">
+    <div className="min-h-screen flex items-center justify-center bg-gray-950 p-4">
+      <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md">
+        <h1 className="text-3xl font-bold text-center mb-2 text-white">
           WaterlooType
         </h1>
-        <p className="text-center text-gray-600 mb-6">
+        <p className="text-center text-gray-400 mb-6">
           Typing test for UWaterloo students only
         </p>
 
         <form onSubmit={handleAuth} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
               Email (@uwaterloo.ca)
             </label>
             <input
@@ -96,12 +96,12 @@ export default function Auth(): JSX.Element {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="yourname@uwaterloo.ca"
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2.5 bg-gray-950/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none text-white placeholder-gray-500"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
               Password
             </label>
             <input
@@ -111,14 +111,14 @@ export default function Auth(): JSX.Element {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2.5 bg-gray-950/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none text-white placeholder-gray-500"
             />
           </div>
 
           {isSignUp && (
             <>
               <div>
-                <label htmlFor="program" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="program" className="block text-sm font-medium text-gray-300 mb-1">
                   Program
                 </label>
                 <input
@@ -128,12 +128,12 @@ export default function Auth(): JSX.Element {
                   onChange={(e) => setProgram(e.target.value)}
                   placeholder="e.g., Computer Science, Software Engineering"
                   required={isSignUp}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2.5 bg-gray-950/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none text-white placeholder-gray-500"
                 />
               </div>
 
               <div>
-                <label htmlFor="faculty" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="faculty" className="block text-sm font-medium text-gray-300 mb-1">
                   Faculty
                 </label>
                 <select
@@ -141,11 +141,11 @@ export default function Auth(): JSX.Element {
                   value={faculty}
                   onChange={(e) => setFaculty(e.target.value)}
                   required={isSignUp}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2.5 bg-gray-950/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none text-white"
                 >
-                  <option value="">Select your faculty</option>
+                  <option value="" className="bg-gray-900">Select your faculty</option>
                   {faculties.map((f) => (
-                    <option key={f} value={f}>
+                    <option key={f} value={f} className="bg-gray-900">
                       {f}
                     </option>
                   ))}
@@ -155,7 +155,7 @@ export default function Auth(): JSX.Element {
           )}
 
           {message && (
-            <div className={`p-3 rounded ${message.includes('Check your email') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+            <div className={`p-3 rounded-lg ${message.includes('Check your email') ? 'bg-green-500/10 border border-green-500/30 text-green-400' : 'bg-red-500/10 border border-red-500/30 text-red-400'}`}>
               {message}
             </div>
           )}
@@ -163,7 +163,7 @@ export default function Auth(): JSX.Element {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? 'Loading...' : isSignUp ? 'Sign Up' : 'Sign In'}
           </button>
@@ -177,7 +177,7 @@ export default function Auth(): JSX.Element {
               setProgram('')
               setFaculty('')
             }}
-            className="text-blue-600 hover:text-blue-700 text-sm"
+            className="text-blue-400 hover:text-blue-300 text-sm transition-colors"
           >
             {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
           </button>

@@ -30,8 +30,11 @@ export default function Home(): JSX.Element {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-950">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+          <div className="text-gray-400">Loading...</div>
+        </div>
       </div>
     )
   }
@@ -47,15 +50,15 @@ export default function Home(): JSX.Element {
 
   if (!isVerified) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-purple-900">
-        <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md text-center">
-          <h1 className="text-2xl font-bold mb-4 text-gray-800">Email Verification Required</h1>
-          <p className="text-gray-600 mb-6">
+      <div className="min-h-screen flex items-center justify-center bg-gray-950 p-4">
+        <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
+          <h1 className="text-2xl font-bold mb-4 text-white">Email Verification Required</h1>
+          <p className="text-gray-400 mb-6">
             Please check your email and verify your account before continuing.
           </p>
           <button
             onClick={() => supabase.auth.signOut()}
-            className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+            className="px-6 py-2.5 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors"
           >
             Sign Out
           </button>
@@ -66,15 +69,15 @@ export default function Home(): JSX.Element {
 
   if (!isUWaterlooEmail) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-purple-900">
-        <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md text-center">
-          <h1 className="text-2xl font-bold mb-4 text-gray-800">Access Denied</h1>
-          <p className="text-gray-600 mb-6">
+      <div className="min-h-screen flex items-center justify-center bg-gray-950 p-4">
+        <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
+          <h1 className="text-2xl font-bold mb-4 text-white">Access Denied</h1>
+          <p className="text-gray-400 mb-6">
             Only @uwaterloo.ca emails are allowed to use this app.
           </p>
           <button
             onClick={() => supabase.auth.signOut()}
-            className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+            className="px-6 py-2.5 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors"
           >
             Sign Out
           </button>
@@ -84,18 +87,20 @@ export default function Home(): JSX.Element {
   }
 
   return (
-    <main className="min-h-screen p-8 max-w-6xl mx-auto">
-      <div className="mb-8 flex justify-between items-center">
-        <h1 className="text-4xl font-bold text-center flex-1">WaterlooType</h1>
-        <button
-          onClick={() => supabase.auth.signOut()}
-          className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
-        >
-          Sign Out
-        </button>
+    <main className="min-h-screen bg-gray-950 p-4 md:p-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <h1 className="text-4xl font-bold text-white">WaterlooType</h1>
+          <button
+            onClick={() => supabase.auth.signOut()}
+            className="px-6 py-2.5 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors"
+          >
+            Sign Out
+          </button>
+        </div>
+        <TypingTest user={session.user as import('@/types/supabase').TypedUser} />
+        <Leaderboard />
       </div>
-      <TypingTest user={session.user as import('@/types/supabase').TypedUser} />
-      <Leaderboard />
     </main>
   )
 }

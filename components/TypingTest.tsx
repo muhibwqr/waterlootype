@@ -115,38 +115,38 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
     }
   }
 
-  const getCharClass = (index: number) => {
-    if (index >= userInput.length) return 'text-gray-400'
-    if (userInput[index] === text[index]) return 'text-green-500'
-    return 'text-red-500 bg-red-100'
+  const getCharClass = (index: number): string => {
+    if (index >= userInput.length) return 'text-gray-500'
+    if (userInput[index] === text[index]) return 'text-green-400'
+    return 'text-red-400 bg-red-500/20'
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-      <div className="mb-6 flex justify-between items-center">
-        <div className="flex gap-6">
+    <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800 p-6 md:p-8 mb-8">
+      <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex gap-8">
           <div>
-            <div className="text-sm text-gray-600">WPM</div>
-            <div className="text-2xl font-bold">{wpm}</div>
+            <div className="text-sm text-gray-400 mb-1">WPM</div>
+            <div className="text-3xl font-bold text-white">{wpm}</div>
           </div>
           <div>
-            <div className="text-sm text-gray-600">Accuracy</div>
-            <div className="text-2xl font-bold">{accuracy.toFixed(1)}%</div>
+            <div className="text-sm text-gray-400 mb-1">Accuracy</div>
+            <div className="text-3xl font-bold text-white">{accuracy.toFixed(1)}%</div>
           </div>
         </div>
         <button
           onClick={resetTest}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
         >
           New Test
         </button>
       </div>
 
       <div className="mb-4">
-        <div className="text-lg leading-relaxed p-4 bg-gray-50 rounded border-2 border-gray-200 min-h-[150px]">
+        <div className="text-lg leading-relaxed p-6 bg-gray-950/50 rounded-xl border border-gray-800 min-h-[150px] font-mono">
           {text.split('').map((char, index) => (
             <span key={index} className={getCharClass(index)}>
-              {char}
+              {char === ' ' ? '\u00A0' : char}
             </span>
           ))}
         </div>
@@ -159,14 +159,14 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
         onPaste={(e) => e.preventDefault()}
         disabled={isComplete}
         placeholder={isComplete ? 'Test complete! Click "New Test" to try again.' : 'Start typing...'}
-        className="w-full p-4 text-lg border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none resize-none min-h-[100px]"
+        className="w-full p-6 text-lg bg-gray-950/50 border-2 border-gray-800 rounded-xl focus:border-blue-500 focus:outline-none resize-none min-h-[120px] text-white placeholder-gray-500 font-mono"
         autoFocus
       />
 
       {isComplete && (
-        <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded">
-          <p className="text-green-800 font-semibold">
-            Test Complete! Your score has been saved to the leaderboard.
+        <div className="mt-4 p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
+          <p className="text-green-400 font-semibold">
+            ✓ Test Complete! Your score has been saved to the leaderboard.
           </p>
         </div>
       )}
