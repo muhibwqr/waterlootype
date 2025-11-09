@@ -6,14 +6,24 @@ import { supabase } from '@/lib/supabase'
 interface LeaderboardEntry {
   id: string
   email: string
+  program?: string
+  faculty?: string
   wpm: number
   accuracy: number
   created_at: string
   rank?: number
 }
 
+interface FacultyEntry {
+  faculty: string
+  avgWpm: number
+  count: number
+  rank?: number
+}
+
 export default function Leaderboard() {
-  const [entries, setEntries] = useState<LeaderboardEntry[]>([])
+  const [individualEntries, setIndividualEntries] = useState<LeaderboardEntry[]>([])
+  const [facultyEntries, setFacultyEntries] = useState<FacultyEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedEntry, setSelectedEntry] = useState<LeaderboardEntry | null>(null)
 
@@ -42,21 +52,59 @@ export default function Leaderboard() {
 
   const fetchLeaderboard = async () => {
     try {
-      const { data, error } = await supabase
+      // Fetch top 5 individuals
+      const { data: individualData, error: individualError } = await supabase
         .from('leaderboard')
         .select('*')
         .order('wpm', { ascending: false })
-        .limit(100)
+        .limit(5)
 
-      if (error) throw error
+      if (individualError) throw individualError
 
-      // Add rank to each entry
-      const rankedData = data.map((entry, index) => ({
+      // Add rank to individual entries
+      const rankedIndividualData = (individualData || []).map((entry, index) => ({
+        ...entry,
+        rank: index + 1,
+      }))
+      setIndividualEntries(rankedIndividualData)
+
+      // Fetch all entries for faculty aggregation
+      const { data: allData, error: allError } = await supabase
+        .from('leaderboard')
+        .select('faculty, wpm')
+        .not('faculty', 'is', null)
+
+      if (allError) throw allError
+
+      // Aggregate by faculty
+      const facultyMap = new Map<string, { totalWpm: number; count: number }>()
+      
+      ;(allData || []).forEach((entry) => {
+        if (entry.faculty) {
+          const existing = facultyMap.get(entry.faculty) || { totalWpm: 0, count: 0 }
+          facultyMap.set(entry.faculty, {
+            totalWpm: existing.totalWpm + entry.wpm,
+            count: existing.count + 1,
+          })
+        }
+      })
+
+      // Calculate averages and sort
+      const facultyArray: FacultyEntry[] = Array.from(facultyMap.entries()).map(
+        ([faculty, data]) => ({
+          faculty,
+          avgWpm: Math.round(data.totalWpm / data.count),
+          count: data.count,
+        })
+      )
+
+      facultyArray.sort((a, b) => b.avgWpm - a.avgWpm)
+      const topFaculties = facultyArray.slice(0, 5).map((entry, index) => ({
         ...entry,
         rank: index + 1,
       }))
 
-      setEntries(rankedData || [])
+      setFacultyEntries(topFaculties)
     } catch (error) {
       console.error('Error fetching leaderboard:', error)
     } finally {
@@ -120,64 +168,124 @@ export default function Leaderboard() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8">
-      <h2 className="text-2xl font-bold mb-6">Leaderboard</h2>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b-2 border-gray-200">
-              <th className="text-left py-3 px-4">Rank</th>
-              <th className="text-left py-3 px-4">Email</th>
-              <th className="text-right py-3 px-4">WPM</th>
-              <th className="text-right py-3 px-4">Accuracy</th>
-              <th className="text-center py-3 px-4">Share</th>
-            </tr>
-          </thead>
-          <tbody>
-            {entries.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="text-center py-8 text-gray-500">
-                  No entries yet. Be the first to complete a test!
-                </td>
+    <div className="space-y-8">
+      {/* Top 5 Faculties */}
+      <div className="bg-white rounded-lg shadow-lg p-8">
+        <h2 className="text-2xl font-bold mb-6">Top 5 Faculties</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b-2 border-gray-200">
+                <th className="text-left py-3 px-4">Rank</th>
+                <th className="text-left py-3 px-4">Faculty</th>
+                <th className="text-right py-3 px-4">Avg WPM</th>
+                <th className="text-right py-3 px-4">Participants</th>
               </tr>
-            ) : (
-              entries.map((entry) => (
-                <tr
-                  key={entry.id}
-                  className={`border-b border-gray-100 hover:bg-gray-50 ${
-                    entry.rank === 1 ? 'bg-gradient-to-r from-cyan-50 to-blue-50' :
-                    entry.rank === 2 ? 'bg-gradient-to-r from-yellow-50 to-yellow-100' :
-                    entry.rank === 3 ? 'bg-gradient-to-r from-orange-50 to-orange-100' : ''
-                  }`}
-                >
-                  <td className="py-4 px-4">
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold">#{entry.rank}</span>
-                      {getBadge(entry.rank || 0)}
-                    </div>
-                  </td>
-                  <td className="py-4 px-4">
-                    <span className="text-gray-700">{entry.email}</span>
-                  </td>
-                  <td className="py-4 px-4 text-right font-semibold">
-                    {entry.wpm}
-                  </td>
-                  <td className="py-4 px-4 text-right">
-                    {entry.accuracy.toFixed(1)}%
-                  </td>
-                  <td className="py-4 px-4 text-center">
-                    <button
-                      onClick={() => handleShare(entry)}
-                      className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
-                    >
-                      Share
-                    </button>
+            </thead>
+            <tbody>
+              {facultyEntries.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="text-center py-8 text-gray-500">
+                    No faculty data yet.
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                facultyEntries.map((entry) => (
+                  <tr
+                    key={entry.faculty}
+                    className={`border-b border-gray-100 hover:bg-gray-50 ${
+                      entry.rank === 1 ? 'bg-gradient-to-r from-cyan-50 to-blue-50' :
+                      entry.rank === 2 ? 'bg-gradient-to-r from-yellow-50 to-yellow-100' :
+                      entry.rank === 3 ? 'bg-gradient-to-r from-orange-50 to-orange-100' : ''
+                    }`}
+                  >
+                    <td className="py-4 px-4">
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold">#{entry.rank}</span>
+                        {getBadge(entry.rank || 0)}
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span className="text-gray-700 font-medium">{entry.faculty}</span>
+                    </td>
+                    <td className="py-4 px-4 text-right font-semibold">
+                      {entry.avgWpm}
+                    </td>
+                    <td className="py-4 px-4 text-right">
+                      {entry.count}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Top 5 Individuals */}
+      <div className="bg-white rounded-lg shadow-lg p-8">
+        <h2 className="text-2xl font-bold mb-6">Top 5 Individuals</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b-2 border-gray-200">
+                <th className="text-left py-3 px-4">Rank</th>
+                <th className="text-left py-3 px-4">Email</th>
+                <th className="text-left py-3 px-4">Program</th>
+                <th className="text-right py-3 px-4">WPM</th>
+                <th className="text-right py-3 px-4">Accuracy</th>
+                <th className="text-center py-3 px-4">Share</th>
+              </tr>
+            </thead>
+            <tbody>
+              {individualEntries.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="text-center py-8 text-gray-500">
+                    No entries yet. Be the first to complete a test!
+                  </td>
+                </tr>
+              ) : (
+                individualEntries.map((entry) => (
+                  <tr
+                    key={entry.id}
+                    className={`border-b border-gray-100 hover:bg-gray-50 ${
+                      entry.rank === 1 ? 'bg-gradient-to-r from-cyan-50 to-blue-50' :
+                      entry.rank === 2 ? 'bg-gradient-to-r from-yellow-50 to-yellow-100' :
+                      entry.rank === 3 ? 'bg-gradient-to-r from-orange-50 to-orange-100' : ''
+                    }`}
+                  >
+                    <td className="py-4 px-4">
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold">#{entry.rank}</span>
+                        {getBadge(entry.rank || 0)}
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span className="text-gray-700">{entry.email}</span>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span className="text-gray-600 text-sm">{entry.program || 'N/A'}</span>
+                    </td>
+                    <td className="py-4 px-4 text-right font-semibold">
+                      {entry.wpm}
+                    </td>
+                    <td className="py-4 px-4 text-right">
+                      {entry.accuracy.toFixed(1)}%
+                    </td>
+                    <td className="py-4 px-4 text-center">
+                      <button
+                        onClick={() => handleShare(entry)}
+                        className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                      >
+                        Share
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )

@@ -4,14 +4,17 @@ import { useState, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 
 const texts = [
-  "Muhib is the coolest person at Waterloo, no cap! He types faster than light and codes like a wizard. When he's not busy being awesome, he's probably thinking about how cool he is.",
-  "Waterloo is the best university in Canada, and we're not just saying that because we go here. The co-op program is legendary, and the geese are... well, they're geese. But hey, at least we're not in Toronto where everything costs a million dollars!",
-  "San Francisco? More like San Fran-sisco where your rent is higher than your GPA! At least in Waterloo, we can afford to eat AND pay tuition. California is bust, but Waterloo is the best!",
-  "Why did the Waterloo student cross the road? To get to the other side of the co-op term! Muhib would definitely approve of this joke because he's cool like that.",
-  "Waterloo students don't just type fast, we type with purpose. We type assignments, we type code, we type emails to our co-op employers.",
-  "California dreaming? More like California screaming when you see the rent prices! In Waterloo, we have affordable housing (totally not lying) and Muhib being cool. That's a win-win situation right there.",
-  "The best typers in Waterloo know that speed isn't everything - it's about accuracy, style, and being as cool as Muhib. He's basically the typing equivalent of a rock star.",
-  "San Francisco has the Golden Gate Bridge, but Waterloo has the Golden Typers. And the coolest one? You guessed it - Muhib! He's so cool, even the geese respect him.",
+  "Waterloo co-op is the ultimate hustle. Six work terms, endless applications, and the dream of landing that Cali or bust internship. We grind through LeetCode, polish our resumes, and type cover letters faster than we type code.",
+  "California or bust! That's the Waterloo motto. Every CS and engineering student dreams of that Silicon Valley co-op. The rent might be insane, but the experience is priceless. Plus, you can always come back to Waterloo where geese are the only thing trying to attack you.",
+  "The co-op hustle never stops at Waterloo. While other students are on break, we're applying to jobs, doing interviews, and preparing for our next work term. It's exhausting, but it's also how we graduate with two years of experience.",
+  "Waterloo students don't sleep, we optimize. We optimize our study schedules, our co-op applications, and our typing speed. Because when you're juggling classes and job hunting, every second counts.",
+  "San Francisco rent is higher than our GPAs, but that's the price of the Cali dream. Waterloo students know the grind: study hard, apply harder, and maybe one day you'll afford a studio apartment in the Bay Area.",
+  "The internship hustle is real. We spend more time on LinkedIn than on Quest. We write cover letters, do technical interviews, and hope that this time, this application, will be the one that lands us that dream co-op.",
+  "Waterloo co-op isn't just a program, it's a lifestyle. We live in four-month cycles: study term, work term, repeat. We pack our lives into suitcases and move cities every four months. It's chaotic, but it's also incredible.",
+  "California or bust isn't just a phrase, it's a mindset. Every Waterloo student knows someone who made it to the Bay Area. We see the success stories, we read the blog posts, and we dream of being next.",
+  "The co-op application season is more stressful than finals. We refresh our emails constantly, practice coding problems daily, and hope our resume stands out among thousands. But when you get that offer, it's all worth it.",
+  "Waterloo geese are more aggressive than tech recruiters, but at least the recruiters pay you. We navigate campus dodging geese and navigate life chasing internships. Both require skill, determination, and a bit of luck.",
+  
 ]
 
 interface TypingTestProps {
@@ -75,12 +78,18 @@ export default function TypingTest({ user }: TypingTestProps) {
     const wordsTyped = userInput.trim().split(/\s+/).length
     const finalWpm = timeElapsed > 0 ? Math.round(wordsTyped / timeElapsed) : 0
 
+    // Get program and faculty from user metadata
+    const program = user.user_metadata?.program || ''
+    const faculty = user.user_metadata?.faculty || ''
+
     try {
       const { error } = await supabase
         .from('leaderboard')
         .insert({
           user_id: user.id,
           email: user.email,
+          program: program,
+          faculty: faculty,
           wpm: finalWpm,
           accuracy: accuracy,
           created_at: new Date().toISOString(),

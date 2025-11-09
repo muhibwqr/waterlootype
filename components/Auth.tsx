@@ -3,9 +3,21 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
+const faculties = [
+  'Mathematics',
+  'Engineering',
+  'Arts',
+  'Science',
+  'Environment',
+  'Health',
+  'Applied Health Sciences',
+]
+
 export default function Auth() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [program, setProgram] = useState('')
+  const [faculty, setFaculty] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
@@ -23,6 +35,11 @@ export default function Auth() {
       return
     }
 
+    if (isSignUp && (!program || !faculty)) {
+      setMessage('Please select both program and faculty!')
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -32,6 +49,10 @@ export default function Auth() {
           password,
           options: {
             emailRedirectTo: `${window.location.origin}`,
+            data: {
+              program,
+              faculty,
+            },
           },
         })
 
@@ -93,6 +114,45 @@ export default function Auth() {
             />
           </div>
 
+          {isSignUp && (
+            <>
+              <div>
+                <label htmlFor="program" className="block text-sm font-medium text-gray-700 mb-1">
+                  Program
+                </label>
+                <input
+                  id="program"
+                  type="text"
+                  value={program}
+                  onChange={(e) => setProgram(e.target.value)}
+                  placeholder="e.g., Computer Science, Software Engineering"
+                  required={isSignUp}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="faculty" className="block text-sm font-medium text-gray-700 mb-1">
+                  Faculty
+                </label>
+                <select
+                  id="faculty"
+                  value={faculty}
+                  onChange={(e) => setFaculty(e.target.value)}
+                  required={isSignUp}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Select your faculty</option>
+                  {faculties.map((f) => (
+                    <option key={f} value={f}>
+                      {f}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </>
+          )}
+
           {message && (
             <div className={`p-3 rounded ${message.includes('Check your email') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
               {message}
@@ -113,6 +173,8 @@ export default function Auth() {
             onClick={() => {
               setIsSignUp(!isSignUp)
               setMessage('')
+              setProgram('')
+              setFaculty('')
             }}
             className="text-blue-600 hover:text-blue-700 text-sm"
           >

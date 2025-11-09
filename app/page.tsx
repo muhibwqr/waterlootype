@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import TypingTest from '@/components/TypingTest'
 import Leaderboard from '@/components/Leaderboard'
-import Auth from '@/components/Auth'
+import LandingPage from '@/components/LandingPage'
 
 export const dynamic = 'force-dynamic'
 
@@ -36,7 +36,7 @@ export default function Home() {
   }
 
   if (!session) {
-    return <Auth />
+    return <LandingPage />
   }
 
   // Check if email is verified and is a uwaterloo.ca email
