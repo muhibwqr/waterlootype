@@ -1,13 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import { supabase } from '@/lib/supabase'
+import { ArrowLeft, Loader2, Lock, Mail, School, Sparkles, User } from 'lucide-react'
 
-const faculties: readonly string[] = [
-  'Mathematics',
+const FACULTIES: readonly string[] = [
   'Engineering',
-  'Arts',
+  'Mathematics',
   'Science',
+  'Arts',
   'Environment',
   'Health',
   'Applied Health Sciences',
@@ -22,21 +23,21 @@ export default function Auth(): JSX.Element {
   const [message, setMessage] = useState<string>('')
   const [isSignUp, setIsSignUp] = useState<boolean>(false)
 
-  const validateEmail = (email: string) => {
-    return email.endsWith('@uwaterloo.ca')
-  }
+  const buttonLabel = useMemo(() => (isSignUp ? 'Create Account' : 'Sign In'), [isSignUp])
 
-  const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const validateEmail = (value: string) => value.trim().toLowerCase().endsWith('@uwaterloo.ca')
+
+  const handleAuth = async (event: React.FormEvent) => {
+    event.preventDefault()
     setMessage('')
 
     if (!validateEmail(email)) {
-      setMessage('Only @uwaterloo.ca emails are allowed!')
+      setMessage('Only @uwaterloo.ca emails are allowed.')
       return
     }
 
-    if (isSignUp && (!program || !faculty)) {
-      setMessage('Please select both program and faculty!')
+    if (isSignUp && (!program.trim() || !faculty)) {
+      setMessage('Tell us your program and faculty to continue.')
       return
     }
 
@@ -51,14 +52,14 @@ export default function Auth(): JSX.Element {
           options: {
             emailRedirectTo: redirectUrl,
             data: {
-              program,
+              program: program.trim(),
               faculty,
             },
           },
         })
 
         if (error) throw error
-        setMessage('Check your email to verify your account!')
+        setMessage('Check your @uwaterloo.ca inbox to verify your account.')
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -68,94 +69,128 @@ export default function Auth(): JSX.Element {
         if (error) throw error
       }
     } catch (error: any) {
-      setMessage(error.message || 'An error occurred')
+      setMessage(error.message || 'Something went wrong. Try again shortly.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-950 p-4">
-      <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center mb-2 text-white">
-          WaterlooType
-        </h1>
-        <p className="text-center text-gray-400 mb-6">
-          Typing test for UWaterloo students only
-        </p>
+    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-black via-slate-950 to-slate-900 px-4 py-12 text-slate-100">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.08),transparent_55%)]" aria-hidden />
+      <div className="relative w-full max-w-xl overflow-hidden rounded-3xl border border-slate-800 bg-slate-950/80 p-8 shadow-2xl shadow-blue-500/10 sm:p-12">
+        <header className="mb-8 flex flex-col gap-4 text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 shadow-lg shadow-purple-500/40">
+            <Sparkles className="h-6 w-6 text-white" />
+          </div>
+          <h1 className="text-3xl font-semibold text-white sm:text-4xl">WaterlooType Access</h1>
+          <p className="text-sm text-slate-300">
+            Sign in with your @uwaterloo.ca email to run the typing gauntlet, save your scores, and flex on the leaderboard.
+          </p>
+        </header>
 
-        <form onSubmit={handleAuth} className="space-y-4">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-              Email (@uwaterloo.ca)
-            </label>
+        <div className="mb-6 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+          <span className="inline-flex items-center gap-2">
+            <Mail className="h-4 w-4 text-blue-200" />
+            @uwaterloo.ca required
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-purple-200" />
+            Free forever
+          </span>
+        </div>
+
+        <form onSubmit={handleAuth} className="space-y-5">
+          <Field
+            label="Waterloo Email"
+            htmlFor="email"
+            icon={<Mail className="h-4 w-4 text-blue-300" />}
+            helper="Use your official @uwaterloo.ca address."
+          >
             <input
               id="email"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="yourname@uwaterloo.ca"
+              onChange={(event) => setEmail(event.target.value)}
+              autoComplete="email"
               required
-              className="w-full px-4 py-2.5 bg-gray-950/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none text-white placeholder-gray-500"
+              className="w-full rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm text-white placeholder-slate-500 transition focus:border-blue-500/70 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              placeholder="you@uwaterloo.ca"
             />
-          </div>
+          </Field>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
-              Password
-            </label>
+          <Field
+            label="Password"
+            htmlFor="password"
+            icon={<Lock className="h-4 w-4 text-purple-300" />}
+            helper="Minimum 6 characters."
+          >
             <input
               id="password"
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              onChange={(event) => setPassword(event.target.value)}
+              autoComplete={isSignUp ? 'new-password' : 'current-password'}
               minLength={6}
-              className="w-full px-4 py-2.5 bg-gray-950/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none text-white placeholder-gray-500"
+              required
+              className="w-full rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm text-white placeholder-slate-500 transition focus:border-purple-500/70 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+              placeholder="••••••••"
             />
-          </div>
+          </Field>
 
           {isSignUp && (
             <>
-              <div>
-                <label htmlFor="program" className="block text-sm font-medium text-gray-300 mb-1">
-                  Program
-                </label>
+              <Field
+                label="Program"
+                htmlFor="program"
+                icon={<User className="h-4 w-4 text-emerald-300" />}
+                helper="Tell us where you grind. Example: Computer Science."
+              >
                 <input
                   id="program"
                   type="text"
                   value={program}
-                  onChange={(e) => setProgram(e.target.value)}
-                  placeholder="e.g., Computer Science, Software Engineering"
-                  required={isSignUp}
-                  className="w-full px-4 py-2.5 bg-gray-950/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none text-white placeholder-gray-500"
+                  onChange={(event) => setProgram(event.target.value)}
+                  required
+                  className="w-full rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm text-white placeholder-slate-500 transition focus:border-emerald-500/70 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                  placeholder="e.g., Computer Engineering"
                 />
-              </div>
+              </Field>
 
-              <div>
-                <label htmlFor="faculty" className="block text-sm font-medium text-gray-300 mb-1">
-                  Faculty
-                </label>
+              <Field
+                label="Faculty"
+                htmlFor="faculty"
+                icon={<School className="h-4 w-4 text-amber-300" />}
+                helper="We’ll use this for faculty leaderboards."
+              >
                 <select
                   id="faculty"
                   value={faculty}
-                  onChange={(e) => setFaculty(e.target.value)}
-                  required={isSignUp}
-                  className="w-full px-4 py-2.5 bg-gray-950/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none text-white"
+                  onChange={(event) => setFaculty(event.target.value)}
+                  required
+                  className="w-full appearance-none rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm text-white transition focus:border-amber-500/70 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
                 >
-                  <option value="" className="bg-gray-900">Select your faculty</option>
-                  {faculties.map((f) => (
-                    <option key={f} value={f} className="bg-gray-900">
-                      {f}
+                  <option value="" disabled>
+                    Select your faculty
+                  </option>
+                  {FACULTIES.map((item) => (
+                    <option key={item} value={item} className="bg-slate-900 text-white">
+                      {item}
                     </option>
                   ))}
                 </select>
-              </div>
+              </Field>
             </>
           )}
 
           {message && (
-            <div className={`p-3 rounded-lg ${message.includes('Check your email') ? 'bg-green-500/10 border border-green-500/30 text-green-400' : 'bg-red-500/10 border border-red-500/30 text-red-400'}`}>
+            <div
+              className={`rounded-2xl border px-4 py-3 text-sm ${
+                message.includes('verify')
+                  ? 'border-emerald-400/40 bg-emerald-500/10 text-emerald-200'
+                  : 'border-rose-400/40 bg-rose-500/10 text-rose-200'
+              }`}
+            >
               {message}
             </div>
           )}
@@ -163,26 +198,56 @@ export default function Auth(): JSX.Element {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-500/30 transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {loading ? 'Loading...' : isSignUp ? 'Sign Up' : 'Sign In'}
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+            {loading ? 'Hold tight…' : buttonLabel}
           </button>
         </form>
 
-        <div className="mt-4 text-center">
+        <div className="mt-6 flex flex-col items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
           <button
             onClick={() => {
-              setIsSignUp(!isSignUp)
+              setIsSignUp((prev) => !prev)
               setMessage('')
               setProgram('')
               setFaculty('')
             }}
-            className="text-blue-400 hover:text-blue-300 text-sm transition-colors"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-800 px-4 py-2 text-slate-300 transition hover:border-blue-500/50 hover:text-white"
           >
-            {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+            <ArrowLeft className="h-4 w-4" />
+            {isSignUp ? 'Have an account? Sign in' : 'Need an account? Sign up'}
           </button>
+          <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">
+            Waterloo students only • Supabase secured
+          </p>
         </div>
       </div>
+    </div>
+  )
+}
+
+function Field({
+  label,
+  htmlFor,
+  icon,
+  helper,
+  children,
+}: {
+  label: string
+  htmlFor: string
+  icon: ReactNode
+  helper?: string
+  children: ReactNode
+}) {
+  return (
+    <div className="space-y-2">
+      <label htmlFor={htmlFor} className="flex items-center gap-2 text-sm font-semibold text-white">
+        <span className="flex h-8 w-8 items-center justify-center rounded-2xl bg-slate-900/80 text-blue-200">{icon}</span>
+        {label}
+      </label>
+      {children}
+      {helper && <p className="text-xs text-slate-400">{helper}</p>}
     </div>
   )
 }

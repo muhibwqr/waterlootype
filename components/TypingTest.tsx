@@ -1,20 +1,21 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { TypedUser } from '@/types/supabase'
+import { CheckCircle2, Shield, Trophy, Zap } from 'lucide-react'
 
-const texts: readonly string[] = [
-  "Waterloo co-op is the ultimate hustle. Six work terms, endless applications, and the dream of landing that Cali or bust internship. We grind through LeetCode, polish our resumes, and type cover letters faster than we type code.",
-  "California or bust! That's the Waterloo motto. Every CS and engineering student dreams of that Silicon Valley co-op. The rent might be insane, but the experience is priceless. Plus, you can always come back to Waterloo where geese are the only thing trying to attack you.",
-  "The co-op hustle never stops at Waterloo. While other students are on break, we're applying to jobs, doing interviews, and preparing for our next work term. It's exhausting, but it's also how we graduate with two years of experience.",
-  "Waterloo students don't sleep, we optimize. We optimize our study schedules, our co-op applications, and our typing speed. Because when you're juggling classes and job hunting, every second counts.",
-  "San Francisco rent is higher than our GPAs, but that's the price of the Cali dream. Waterloo students know the grind: study hard, apply harder, and maybe one day you'll afford a studio apartment in the Bay Area.",
-  "The internship hustle is real. We spend more time on LinkedIn than on Quest. We write cover letters, do technical interviews, and hope that this time, this application, will be the one that lands us that dream co-op.",
-  "Waterloo co-op isn't just a program, it's a lifestyle. We live in four-month cycles: study term, work term, repeat. We pack our lives into suitcases and move cities every four months. It's chaotic, but it's also incredible.",
-  "California or bust isn't just a phrase, it's a mindset. Every Waterloo student knows someone who made it to the Bay Area. We see the success stories, we read the blog posts, and we dream of being next.",
-  "The co-op application season is more stressful than finals. We refresh our emails constantly, practice coding problems daily, and hope our resume stands out among thousands. But when you get that offer, it's all worth it.",
-  "Waterloo geese are more aggressive than tech recruiters, but at least the recruiters pay you. We navigate campus dodging geese and navigate life chasing internships. Both require skill, determination, and a bit of luck.",
+const PASSAGES: readonly string[] = [
+  "Waterloo co-op is the ultimate hustle. Six work terms, endless applications, and the dream of landing that Cali-or-bust internship. We grind through LeetCode, polish our resumes, and type cover letters faster than we type code.",
+  "California or bust! That's the Waterloo rallying cry. Every CS and engineering student dreams of that Silicon Valley co-op. The rent might be wild, but the experience is priceless. Plus, you can always retreat to campus geese for humility.",
+  'The co-op hustle never pauses. While other schools relax, Warriors submit applications, crush interviews, and prep for the next work term. It’s intense—but graduating with two years of experience hits different.',
+  "Waterloo students don't sleep—we optimize. Schedules, co-op applications, typing speed. When you're juggling classes and job hunting, every second matters.",
+  'San Francisco rent is higher than our GPAs, but that’s the price of the Cali dream. Study hard, apply harder, and maybe one day that studio apartment view is yours.',
+  'The internship treadmill is real. We spend more time on WaterlooWorks than on Quest. Cover letters, coding challenges, coffee chats—repeat until you ship your dream co-op.',
+  'Waterloo co-op isn’t just a program; it’s a lifestyle. Four-month cycles, new cities, suitcases packed like IKEA speedruns. Chaotic? Absolutely. Worth it? Completely.',
+  "California or bust isn't a phrase—it’s a mindset. Warriors chase stories of alumni crushing it in the Bay. We see the success, read the Medium posts, and grind to be next.",
+  'Application season is spicier than finals. Refresh inboxes, grind coding problems, hope the resume stands out. But when the offer hits, it’s goosebump city.',
+  'Waterloo geese rival tech recruiters for aggression—but at least recruiters pay. We dodge geese on Ring Road and chase internships with the same relentless energy.',
 ] as const
 
 interface TypingTestProps {
@@ -22,165 +23,308 @@ interface TypingTestProps {
 }
 
 export default function TypingTest({ user }: TypingTestProps): JSX.Element {
-  const [text, setText] = useState('')
-  const [userInput, setUserInput] = useState('')
-  const [startTime, setStartTime] = useState<number | null>(null)
-  const [wpm, setWpm] = useState(0)
-  const [accuracy, setAccuracy] = useState(100)
-  const [isComplete, setIsComplete] = useState(false)
-  const [testStarted, setTestStarted] = useState(false)
+  const [target, setTarget] = useState<string>(() => pickPassage())
+  const [typed, setTyped] = useState<string>('')
+  const [startedAt, setStartedAt] = useState<number | null>(null)
+  const [endedAt, setEndedAt] = useState<number | null>(null)
+  const [elapsed, setElapsed] = useState<number>(0)
+  const [bestWpm, setBestWpm] = useState<number>(0)
+  const [saving, setSaving] = useState<boolean>(false)
+  const [message, setMessage] = useState<string | null>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    const randomText = texts[Math.floor(Math.random() * texts.length)]
-    setText(randomText)
-  }, [])
+    const fetchBest = async () => {
+      const { data, error } = await supabase
+        .from('leaderboard')
+        .select('wpm')
+        .eq('user_id', user.id)
+        .order('wpm', { ascending: false })
+        .limit(1)
 
-  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value
-
-    if (!testStarted) {
-      setTestStarted(true)
-      setStartTime(Date.now())
-    }
-
-    setUserInput(value)
-
-    // Calculate accuracy
-    let correctChars = 0
-    for (let i = 0; i < value.length; i++) {
-      if (value[i] === text[i]) {
-        correctChars++
+      if (!error && data?.length) {
+        setBestWpm(data[0].wpm)
       }
     }
-    const acc = value.length > 0 ? (correctChars / value.length) * 100 : 100
-    setAccuracy(acc)
 
-    // Calculate WPM
-    if (startTime) {
-      const timeElapsed = (Date.now() - startTime) / 60000 // minutes
-      const wordsTyped = value.trim().split(/\s+/).length
-      const currentWpm = timeElapsed > 0 ? Math.round(wordsTyped / timeElapsed) : 0
-      setWpm(currentWpm)
+    fetchBest().catch((err) => console.error('Error fetching best WPM:', err))
+  }, [user.id])
+
+  useEffect(() => {
+    if (!startedAt || endedAt) return
+
+    const tick = () => setElapsed(Date.now() - startedAt)
+    const id = window.setInterval(tick, 75)
+    tick()
+
+    return () => window.clearInterval(id)
+  }, [startedAt, endedAt])
+
+  const correctChars = useMemo(() => {
+    let count = 0
+    for (let i = 0; i < Math.min(typed.length, target.length); i++) {
+      if (typed[i] === target[i]) count++
+      else break
+    }
+    return count
+  }, [typed, target])
+
+  const accuracy = clamp(calcAccuracy(target, typed))
+  const wpm = clamp(calcWpm(correctChars, Math.max(elapsed, 1)))
+  const progress = clamp((typed.length / target.length) * 100)
+  const finished = endedAt !== null
+
+  const minutes = Math.floor(elapsed / 1000 / 60)
+  const seconds = Math.floor((elapsed / 1000) % 60)
+
+  const tier = tierBadge(wpm)
+
+  const handleInput = (value: string) => {
+    setMessage(null)
+
+    if (!startedAt) {
+      const now = Date.now()
+      setStartedAt(now)
     }
 
-    // Check if complete
-    if (value === text) {
-      setIsComplete(true)
-      saveResult()
+    if (finished) return
+
+    let nextValue = value
+    if (value.length > target.length) {
+      nextValue = value.slice(0, target.length)
+    }
+
+    setTyped(nextValue)
+
+    if (nextValue.length === target.length) {
+      const now = Date.now()
+      setEndedAt(now)
+      setElapsed(now - (startedAt ?? now))
+      setTyped(target)
     }
   }
 
-  const saveResult = async () => {
-    if (!startTime || !isComplete) return
+  const submitScore = async () => {
+    if (!finished || !startedAt || !endedAt) {
+      setMessage('Finish the passage to submit your score.')
+      return
+    }
 
-    const timeElapsed = (Date.now() - startTime) / 60000
-    const wordsTyped = userInput.trim().split(/\s+/).length
-    const finalWpm = timeElapsed > 0 ? Math.round(wordsTyped / timeElapsed) : 0
+    setSaving(true)
 
-    // Get program and faculty from user metadata
-    const program = user.user_metadata?.program || ''
-    const faculty = user.user_metadata?.faculty || ''
+    const payload = {
+      user_id: user.id,
+      email: user.email,
+      program: user.user_metadata?.program ?? '',
+      faculty: user.user_metadata?.faculty ?? '',
+      wpm: Math.round(wpm),
+      accuracy: Number(accuracy.toFixed(2)),
+      created_at: new Date().toISOString(),
+    }
 
     try {
-      const { error } = await supabase
-        .from('leaderboard')
-        .insert({
-          user_id: user.id,
-          email: user.email,
-          program: program,
-          faculty: faculty,
-          wpm: finalWpm,
-          accuracy: accuracy,
-          created_at: new Date().toISOString(),
-        })
-
+      const { error } = await supabase.from('leaderboard').insert(payload)
       if (error) throw error
+      setMessage('Score submitted! Check the leaderboard to see where you landed.')
+      setBestWpm((prev) => Math.max(prev, payload.wpm))
     } catch (error) {
       console.error('Error saving result:', error)
+      setMessage('Something went wrong saving your score. Try again shortly.')
+    } finally {
+      setSaving(false)
     }
   }
 
-  const resetTest = () => {
-    const randomText = texts[Math.floor(Math.random() * texts.length)]
-    setText(randomText)
-    setUserInput('')
-    setStartTime(null)
-    setWpm(0)
-    setAccuracy(100)
-    setIsComplete(false)
-    setTestStarted(false)
-    if (inputRef.current) {
-      inputRef.current.focus()
-    }
-  }
-
-  const getCharClass = (index: number): string => {
-    if (index >= userInput.length) return 'text-gray-500'
-    if (userInput[index] === text[index]) return 'text-emerald-400'
-    return 'text-red-400 bg-red-500/20'
+  const reset = () => {
+    setTarget(pickPassage())
+    setTyped('')
+    setStartedAt(null)
+    setEndedAt(null)
+    setElapsed(0)
+    setSaving(false)
+    setMessage(null)
+    inputRef.current?.focus()
   }
 
   return (
-    <div className="relative bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-800/80 backdrop-blur-xl rounded-3xl border border-gray-700/50 p-6 md:p-8 mb-8 shadow-2xl shadow-blue-500/10">
-      {/* Animated border glow */}
-      <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"></div>
-      
-      <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div className="flex gap-8">
-          <div className="relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-lg blur opacity-30 animate-pulse"></div>
-            <div className="relative bg-gray-900/80 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50">
-              <div className="text-xs text-gray-400 mb-1 uppercase tracking-wider">WPM</div>
-              <div className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">{wpm}</div>
-            </div>
+    <div className="relative mb-12 overflow-hidden rounded-3xl border border-slate-800 bg-slate-950/80 p-6 text-slate-100 shadow-2xl shadow-blue-500/10 md:p-10">
+      <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-blue-500/10 blur-3xl" aria-hidden />
+      <div className="absolute -bottom-20 -left-16 h-52 w-52 rounded-full bg-purple-500/10 blur-3xl" aria-hidden />
+
+      <header className="relative mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/60 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-blue-200/80">
+            <Zap className="h-3.5 w-3.5 text-blue-300" />
+            Live Typing Test
           </div>
-          <div className="relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-600 to-green-400 rounded-lg blur opacity-30 animate-pulse"></div>
-            <div className="relative bg-gray-900/80 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50">
-              <div className="text-xs text-gray-400 mb-1 uppercase tracking-wider">Accuracy</div>
-              <div className="text-4xl font-bold bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">{accuracy.toFixed(1)}%</div>
-            </div>
-          </div>
-        </div>
-        <button
-          onClick={resetTest}
-          className="relative px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/50 hover:shadow-blue-500/70"
-        >
-          <span className="relative z-10">New Test</span>
-          <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 hover:opacity-100 blur-xl transition-opacity"></div>
-        </button>
-      </div>
-
-      <div className="mb-4">
-        <div className="text-lg leading-relaxed p-6 bg-gray-950/70 backdrop-blur-sm rounded-2xl border border-gray-700/50 min-h-[150px] font-mono shadow-inner">
-          {text.split('').map((char, index) => (
-            <span key={index} className={getCharClass(index)}>
-              {char === ' ' ? '\u00A0' : char}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <textarea
-        ref={inputRef}
-        value={userInput}
-        onChange={handleInput}
-        onPaste={(e) => e.preventDefault()}
-        disabled={isComplete}
-        placeholder={isComplete ? 'Test complete! Click "New Test" to try again.' : 'Start typing...'}
-        className="w-full p-6 text-lg bg-gray-950/70 backdrop-blur-sm border-2 border-gray-700/50 rounded-2xl focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 focus:outline-none resize-none min-h-[120px] text-white placeholder-gray-500 font-mono transition-all duration-300 shadow-lg"
-        autoFocus
-      />
-
-      {isComplete && (
-        <div className="mt-4 p-4 bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-500/30 rounded-2xl backdrop-blur-sm animate-pulse-glow">
-          <p className="text-emerald-400 font-semibold flex items-center gap-2">
-            <span className="text-2xl">✨</span>
-            <span>Test Complete! Your score has been saved to the leaderboard.</span>
+          <h2 className="mt-5 text-3xl font-semibold text-white sm:text-4xl">WaterlooWorks Sprint</h2>
+          <p className="mt-2 max-w-2xl text-sm text-slate-300">
+            Lock in, focus on precision, and let speed follow. Scores update in real time—your next personal
+            best is a reset away.
           </p>
         </div>
+        <div className="grid grid-cols-2 gap-4 sm:flex sm:items-center sm:gap-5">
+          <StatTile label="Current WPM" value={Math.round(wpm)} accent="from-blue-500 to-cyan-400" />
+          <StatTile label="Accuracy" value={`${accuracy.toFixed(1)}%`} accent="from-emerald-500 to-green-400" />
+          <StatTile label="Elapsed" value={`${pad(minutes)}:${pad(seconds)}`} accent="from-purple-500 to-pink-400" />
+          <StatTile label="Personal Best" value={bestWpm} accent="from-amber-500 to-orange-400" />
+        </div>
+      </header>
+
+      <section className="relative rounded-3xl border border-slate-800 bg-slate-950/80 p-6 shadow-inner shadow-slate-900">
+        <div className="mb-4 flex items-center justify-between text-xs uppercase tracking-[0.3em] text-slate-400">
+          <span>Waterloo-themed passage</span>
+          <span className="inline-flex items-center gap-2 font-semibold text-blue-300">
+            <Shield className="h-4 w-4" />
+            {tier.label} Tier
+          </span>
+        </div>
+        <div className="min-h-[160px] rounded-2xl border border-slate-800 bg-slate-900/60 p-6 font-mono text-[15px] leading-relaxed text-slate-300">
+          {target.split('').map((char, index) => {
+            const typedChar = typed[index]
+            let className = 'text-slate-500/80'
+
+            if (typedChar != null) {
+              className =
+                typedChar === char
+                  ? 'text-emerald-400'
+                  : 'rounded bg-red-500/20 px-[1px] text-red-400 shadow-inner shadow-red-500/40'
+            }
+
+            return (
+              <span key={index} className={className}>
+                {char === ' ' ? '\u00A0' : char}
+              </span>
+            )
+          })}
+        </div>
+
+        <textarea
+          ref={inputRef}
+          value={typed}
+          onChange={(event) => handleInput(event.target.value)}
+          onPaste={(event) => event.preventDefault()}
+          disabled={finished}
+          placeholder={finished ? 'Great work! Reset to run it back.' : 'Start typing the passage above…'}
+          className="mt-6 w-full resize-none rounded-2xl border border-slate-800 bg-slate-950/70 p-5 font-mono text-base text-white shadow-lg shadow-blue-500/10 transition focus:border-blue-500/80 focus:outline-none focus:ring-2 focus:ring-blue-500/20 md:text-lg"
+          rows={5}
+        />
+
+        <div className="mt-6">
+          <div className="relative h-2 overflow-hidden rounded-full bg-slate-800/70">
+            <div
+              className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-all"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <div className="mt-3 flex flex-wrap items-center justify-between text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+            <span>Progress {Math.round(progress)}%</span>
+            <span>
+              {pad(minutes)}:{pad(seconds)}
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <footer className="relative mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={reset}
+            className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-blue-500/60 hover:text-white"
+          >
+            <Zap className="h-4 w-4" />
+            New Passage
+          </button>
+          <button
+            onClick={() => {
+              setTyped('')
+              setStartedAt(null)
+              setEndedAt(null)
+              setElapsed(0)
+              setMessage(null)
+              inputRef.current?.focus()
+            }}
+            className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-purple-500/60 hover:text-white"
+          >
+            Reset Run
+          </button>
+          <button
+            onClick={submitScore}
+            disabled={saving}
+            className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-purple-500/30 transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            <Trophy className="h-4 w-4" />
+            {saving ? 'Submitting…' : 'Submit Score'}
+          </button>
+        </div>
+        <div className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-2 text-sm text-slate-300">
+          <Shield className="h-4 w-4 text-blue-300" />
+          Stay relaxed, lead with accuracy. Speed follows focus.
+        </div>
+      </footer>
+
+      {message && (
+        <div className="relative mt-6 rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4 text-sm text-blue-200">
+          <CheckCircle2 className="mr-2 inline h-4 w-4 align-text-bottom" />
+          {message}
+        </div>
       )}
+    </div>
+  )
+}
+
+function pickPassage(seed = Math.random()): string {
+  const index = Math.floor(seed * PASSAGES.length)
+  return PASSAGES[index]
+}
+
+function clamp(value: number, min = 0, max = 240): number {
+  return Math.min(max, Math.max(min, value))
+}
+
+function calcAccuracy(target: string, input: string): number {
+  if (!target.length) return 0
+  let correct = 0
+  for (let i = 0; i < Math.min(target.length, input.length); i++) {
+    if (target[i] === input[i]) correct++
+  }
+  return (correct / target.length) * 100
+}
+
+function calcWpm(correctChars: number, elapsedMs: number): number {
+  const minutes = elapsedMs / 1000 / 60
+  if (minutes <= 0) return 0
+  return (correctChars / 5) / minutes
+}
+
+function tierBadge(wpm: number): { label: string } {
+  if (wpm >= 140) return { label: 'Diamond' }
+  if (wpm >= 110) return { label: 'Gold' }
+  if (wpm >= 85) return { label: 'Bronze' }
+  return { label: 'Warrior' }
+}
+
+function pad(value: number): string {
+  return value.toString().padStart(2, '0')
+}
+
+function StatTile({
+  label,
+  value,
+  accent,
+}: {
+  label: string
+  value: number | string
+  accent: string
+}) {
+  return (
+    <div className="rounded-2xl border border-slate-800 bg-slate-950/70 p-4 shadow-inner shadow-slate-900">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">{label}</p>
+      <p
+        className={`mt-2 text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r ${accent}`}
+      >
+        {value}
+      </p>
     </div>
   )
 }

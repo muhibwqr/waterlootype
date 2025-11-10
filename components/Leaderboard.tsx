@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { LeaderboardEntry, FacultyEntry } from '@/types/database'
+import { ArrowRight, GraduationCap, Medal, Sparkles, Trophy, Users } from 'lucide-react'
 
 export default function Leaderboard(): JSX.Element {
   const [individualEntries, setIndividualEntries] = useState<LeaderboardEntry[]>([])
@@ -35,12 +36,11 @@ export default function Leaderboard(): JSX.Element {
 
   const fetchLeaderboard = async (): Promise<void> => {
     try {
-      // Fetch top 5 individuals
       const { data: individualData, error: individualError } = await supabase
         .from('leaderboard')
         .select('*')
         .order('wpm', { ascending: false })
-        .limit(5)
+        .limit(10)
 
       if (individualError) throw individualError
 
@@ -50,7 +50,6 @@ export default function Leaderboard(): JSX.Element {
       }))
       setIndividualEntries(rankedIndividualData)
 
-      // Fetch all entries for faculty aggregation
       const { data: allData, error: allError } = await supabase
         .from('leaderboard')
         .select('faculty, wpm')
@@ -59,27 +58,24 @@ export default function Leaderboard(): JSX.Element {
       if (allError) throw allError
 
       const facultyMap = new Map<string, { totalWpm: number; count: number }>()
-      
+
       ;(allData || []).forEach((entry) => {
-        if (entry.faculty) {
-          const existing = facultyMap.get(entry.faculty) || { totalWpm: 0, count: 0 }
-          facultyMap.set(entry.faculty, {
-            totalWpm: existing.totalWpm + entry.wpm,
-            count: existing.count + 1,
-          })
-        }
+        if (!entry.faculty) return
+        const existing = facultyMap.get(entry.faculty) || { totalWpm: 0, count: 0 }
+        facultyMap.set(entry.faculty, {
+          totalWpm: existing.totalWpm + entry.wpm,
+          count: existing.count + 1,
+        })
       })
 
-      const facultyArray: FacultyEntry[] = Array.from(facultyMap.entries()).map(
-        ([faculty, data]) => ({
-          faculty,
-          avgWpm: Math.round(data.totalWpm / data.count),
-          count: data.count,
-        })
-      )
+      const facultyArray: FacultyEntry[] = Array.from(facultyMap.entries()).map(([faculty, data]) => ({
+        faculty,
+        avgWpm: Math.round(data.totalWpm / data.count),
+        count: data.count,
+      }))
 
       facultyArray.sort((a, b) => b.avgWpm - a.avgWpm)
-      const topFaculties = facultyArray.slice(0, 5).map((entry, index) => ({
+      const topFaculties = facultyArray.slice(0, 6).map((entry, index) => ({
         ...entry,
         rank: index + 1,
       }))
@@ -92,32 +88,29 @@ export default function Leaderboard(): JSX.Element {
     }
   }
 
-  const getRankIcon = (rank: number): string => {
-    if (rank === 1) return '🥇'
-    if (rank === 2) return '🥈'
-    if (rank === 3) return '🥉'
-    return `#${rank}`
+  const getRankColor = (rank: number): string => {
+    if (rank === 1) return 'border-blue-400/60 bg-blue-500/10'
+    if (rank === 2) return 'border-purple-400/60 bg-purple-500/10'
+    if (rank === 3) return 'border-amber-400/60 bg-amber-500/10'
+    return 'border-slate-800 bg-slate-900/70'
   }
 
-  const getRankColor = (rank: number): string => {
-    if (rank === 1) return 'from-cyan-500/30 via-blue-500/20 to-purple-500/30 border-cyan-400/40 shadow-lg shadow-cyan-500/20'
-    if (rank === 2) return 'from-yellow-500/30 via-amber-500/20 to-orange-500/30 border-yellow-400/40 shadow-lg shadow-yellow-500/20'
-    if (rank === 3) return 'from-orange-500/30 via-red-500/20 to-pink-500/30 border-orange-400/40 shadow-lg shadow-orange-500/20'
-    return 'from-gray-800/50 to-gray-900/50 border-gray-700/50'
+  const getRankIcon = (rank: number): ReactNode => {
+    if (rank === 1) return <Trophy className="h-5 w-5 text-blue-200" />
+    if (rank === 2) return <Medal className="h-5 w-5 text-purple-200" />
+    if (rank === 3) return <Sparkles className="h-5 w-5 text-amber-200" />
+    return <span className="text-xs font-semibold text-slate-300">#{rank}</span>
   }
 
   const handleShare = async (entry: LeaderboardEntry): Promise<void> => {
-    const shareText = entry.rank === 1
-      ? `I'm the #1 typist at Waterloo! 🥇 ${entry.wpm} WPM! Beat me if you can! 🏆`
-      : entry.rank === 2
-      ? `I'm #2 on the WaterlooType leaderboard! 🥈 ${entry.wpm} WPM!`
-      : entry.rank === 3
-      ? `I'm #3 on the WaterlooType leaderboard! 🥉 ${entry.wpm} WPM!`
-      : `I'm ranked #${entry.rank} on the WaterlooType leaderboard with ${entry.wpm} WPM!`
+    const shareText =
+      entry.rank === 1
+        ? `I'm the #1 typist at Waterloo! ${entry.wpm} WPM — beat me if you can!`
+        : `I'm ranked #${entry.rank} on the WaterlooType leaderboard with ${entry.wpm} WPM.`
 
     if (navigator.share) {
       await navigator.share({
-        title: 'WaterlooType Achievement',
+        title: 'WaterlooType Leaderboard',
         text: shareText,
         url: window.location.href,
       })
@@ -129,130 +122,159 @@ export default function Leaderboard(): JSX.Element {
 
   if (loading) {
     return (
-      <div className="relative bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-800/80 backdrop-blur-xl rounded-3xl border border-gray-700/50 p-8 shadow-2xl shadow-blue-500/10">
-        <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-500/30 border-t-blue-500"></div>
-          <p className="mt-4 text-gray-400">Loading leaderboard...</p>
-        </div>
+      <div className="relative rounded-3xl border border-slate-800 bg-slate-950/80 p-10 text-center text-slate-300 shadow-2xl shadow-blue-500/10">
+        <div className="mx-auto h-12 w-12 animate-spin rounded-full border-2 border-blue-500/40 border-t-blue-400" />
+        <p className="mt-4 text-sm text-slate-400">Loading leaderboard…</p>
       </div>
     )
   }
 
   return (
-    <div className="relative bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-800/80 backdrop-blur-xl rounded-3xl border border-gray-700/50 p-6 md:p-8 shadow-2xl shadow-purple-500/10">
-      {/* Animated border glow */}
-      <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-600/20 via-blue-600/20 to-cyan-600/20 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"></div>
-      
-      <div className="mb-6">
-        <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-          Leaderboard
-        </h2>
-        <div className="flex gap-2 border-b border-gray-700/50">
-          <button
-            onClick={() => setActiveTab('individuals')}
-            className={`relative px-6 py-3 font-semibold transition-all duration-300 ${
-              activeTab === 'individuals'
-                ? 'text-blue-400'
-                : 'text-gray-400 hover:text-gray-300'
-            }`}
-          >
-            Top Individuals
-            {activeTab === 'individuals' && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400"></span>
-            )}
-          </button>
-          <button
-            onClick={() => setActiveTab('faculties')}
-            className={`relative px-6 py-3 font-semibold transition-all duration-300 ${
-              activeTab === 'faculties'
-                ? 'text-blue-400'
-                : 'text-gray-400 hover:text-gray-300'
-            }`}
-          >
-            Top Faculties
-            {activeTab === 'faculties' && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400"></span>
-            )}
-          </button>
+    <div className="relative rounded-3xl border border-slate-800 bg-slate-950/80 p-8 text-slate-100 shadow-2xl shadow-purple-500/10">
+      <div className="absolute inset-x-6 top-6 -z-10 h-32 rounded-3xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-3xl" aria-hidden />
+
+      <header className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/60 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-blue-200/80">
+            <Trophy className="h-3.5 w-3.5 text-blue-300" />
+            Leaderboard Live
+          </div>
+          <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">Warriors on top</h2>
+          <p className="mt-2 text-sm text-slate-300">
+            Track the fastest typists on campus and see which faculty is leading the charge.
+          </p>
         </div>
+        <button
+          onClick={() => setActiveTab(activeTab === 'individuals' ? 'faculties' : 'individuals')}
+          className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-blue-500/60 hover:text-white"
+        >
+          Toggle view
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </header>
+
+      <div className="mt-8 flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+        <button
+          onClick={() => setActiveTab('individuals')}
+          className={`rounded-full px-4 py-2 transition ${
+            activeTab === 'individuals'
+              ? 'bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30 text-white'
+              : 'border border-slate-800 text-slate-300 hover:border-blue-500/50 hover:text-white'
+          }`}
+        >
+          Top Individuals
+        </button>
+        <button
+          onClick={() => setActiveTab('faculties')}
+          className={`rounded-full px-4 py-2 transition ${
+            activeTab === 'faculties'
+              ? 'bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30 text-white'
+              : 'border border-slate-800 text-slate-300 hover:border-blue-500/50 hover:text-white'
+          }`}
+        >
+          Fastest Faculties
+        </button>
       </div>
 
       {activeTab === 'individuals' ? (
-        <div className="space-y-3">
+        <div className="mt-8 space-y-4">
           {individualEntries.length === 0 ? (
-            <div className="text-center py-12 text-gray-400">
-              <p className="text-lg">No entries yet.</p>
-              <p className="text-sm mt-2">Be the first to complete a test!</p>
-            </div>
+            <EmptyState
+              icon={<Sparkles className="h-5 w-5 text-blue-200" />}
+              title="No scores yet"
+              description="Run a test, submit your score, and claim the top spot."
+            />
           ) : (
             individualEntries.map((entry) => (
-              <div
+              <article
                 key={entry.id}
-                className={`relative bg-gradient-to-r ${getRankColor(entry.rank || 0)} rounded-2xl border backdrop-blur-sm p-5 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl`}
+                className={`relative overflow-hidden rounded-3xl border ${getRankColor(entry.rank || 0)} p-5 transition hover:scale-[1.01]`}
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 flex-1">
-                    <div className="text-3xl font-bold w-14 text-center drop-shadow-lg">
+                <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+                  <div className="flex flex-1 items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-800 bg-slate-950/70">
                       {getRankIcon(entry.rank || 0)}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-white font-semibold truncate text-lg">{entry.email}</div>
-                      <div className="text-sm text-gray-400 truncate">{entry.program || 'N/A'}</div>
+                    <div className="min-w-0">
+                      <p className="truncate text-lg font-semibold text-white">{entry.email}</p>
+                      <p className="truncate text-sm text-slate-300">
+                        {entry.program || 'Program unknown'} • {entry.faculty || 'Faculty TBD'}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-6">
                     <div className="text-right">
-                      <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">{entry.wpm}</div>
-                      <div className="text-xs text-gray-400 uppercase tracking-wider">WPM</div>
+                      <p className="text-3xl font-semibold text-white">{entry.wpm}</p>
+                      <p className="text-xs uppercase tracking-[0.3em] text-slate-400">WPM</p>
                     </div>
                     <div className="text-right">
-                      <div className="text-xl font-semibold bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">{entry.accuracy.toFixed(1)}%</div>
-                      <div className="text-xs text-gray-400 uppercase tracking-wider">Accuracy</div>
+                      <p className="text-xl font-semibold text-blue-100">{entry.accuracy.toFixed(1)}%</p>
+                      <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Accuracy</p>
                     </div>
                     <button
                       onClick={() => handleShare(entry)}
-                      className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-xl text-sm font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/50"
+                      className="rounded-2xl border border-white/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:border-white/40"
                     >
                       Share
                     </button>
                   </div>
                 </div>
-              </div>
+              </article>
             ))
           )}
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
           {facultyEntries.length === 0 ? (
-            <div className="text-center py-12 text-gray-400">
-              <p className="text-lg">No faculty data yet.</p>
-            </div>
+            <EmptyState
+              icon={<Users className="h-5 w-5 text-blue-200" />}
+              title="No faculty data"
+              description="Be the first from your faculty to log a score."
+            />
           ) : (
             facultyEntries.map((entry) => (
-              <div
+              <article
                 key={entry.faculty}
-                className={`relative bg-gradient-to-r ${getRankColor(entry.rank || 0)} rounded-2xl border backdrop-blur-sm p-5 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl`}
+                className={`flex flex-col justify-between rounded-3xl border ${getRankColor(entry.rank || 0)} p-5 transition hover:scale-[1.01]`}
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 flex-1">
-                    <div className="text-3xl font-bold w-14 text-center drop-shadow-lg">
-                      {getRankIcon(entry.rank || 0)}
-                    </div>
-                    <div>
-                      <div className="text-white font-semibold text-xl">{entry.faculty}</div>
-                      <div className="text-sm text-gray-400">{entry.count} participant{entry.count !== 1 ? 's' : ''}</div>
-                    </div>
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-800 bg-slate-950/80">
+                    {getRankIcon(entry.rank || 0)}
                   </div>
-                  <div className="text-right">
-                    <div className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">{entry.avgWpm}</div>
-                    <div className="text-xs text-gray-400 uppercase tracking-wider">Avg WPM</div>
+                  <div>
+                    <p className="text-lg font-semibold text-white">{entry.faculty}</p>
+                    <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+                      {entry.count} participant{entry.count === 1 ? '' : 's'}
+                    </p>
                   </div>
                 </div>
-              </div>
+                <div className="mt-4 flex items-end justify-between">
+                  <div>
+                    <p className="text-3xl font-semibold text-white">{entry.avgWpm}</p>
+                    <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Avg WPM</p>
+                  </div>
+                  <div className="rounded-2xl border border-slate-800 bg-slate-900/70 px-3 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-blue-200">
+                    <GraduationCap className="mr-2 inline h-4 w-4 align-text-bottom" />
+                    Faculty pride
+                  </div>
+                </div>
+              </article>
             ))
           )}
         </div>
       )}
+    </div>
+  )
+}
+
+function EmptyState({ icon, title, description }: { icon: ReactNode; title: string; description: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-slate-800 bg-slate-950/60 p-12 text-center text-slate-300">
+      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-slate-900/70">
+        {icon}
+      </div>
+      <p className="text-lg font-semibold text-white">{title}</p>
+      <p className="mt-2 max-w-sm text-sm text-slate-400">{description}</p>
     </div>
   )
 }
