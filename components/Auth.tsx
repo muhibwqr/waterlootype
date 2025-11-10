@@ -3,6 +3,7 @@
 import { useMemo, useState, type ReactNode } from 'react'
 import { supabase } from '@/lib/supabase'
 import { ArrowLeft, Loader2, Lock, Mail, School, Sparkles, User } from 'lucide-react'
+import { GlassCard } from '@/components/ui/GlassCard'
 
 const FACULTIES: readonly string[] = [
   'Engineering',
@@ -78,12 +79,14 @@ export default function Auth(): JSX.Element {
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-black via-slate-950 to-slate-900 px-4 py-12 text-slate-100">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.08),transparent_55%)]" aria-hidden />
-      <div className="relative w-full max-w-xl overflow-hidden rounded-3xl border border-slate-800 bg-slate-950/80 p-8 shadow-2xl shadow-blue-500/10 sm:p-12">
+      <GlassCard interactive={false} className="relative w-full max-w-xl overflow-hidden p-8 text-left shadow-2xl shadow-blue-500/15 sm:p-12">
         <header className="mb-8 flex flex-col gap-4 text-center">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 shadow-lg shadow-purple-500/40">
             <Sparkles className="h-6 w-6 text-white" />
           </div>
-          <h1 className="text-3xl font-semibold text-white sm:text-4xl">WaterlooType Access</h1>
+          <h1 className="text-3xl font-semibold text-white sm:text-4xl">
+            WaterlooType <span className="gradient-text">Access</span>
+          </h1>
           <p className="text-sm text-slate-300">
             Sign in with your @uwaterloo.ca email to run the typing gauntlet, save your scores, and flex on the leaderboard.
           </p>
@@ -222,7 +225,7 @@ export default function Auth(): JSX.Element {
             Waterloo students only • Supabase secured
           </p>
         </div>
-      </div>
+      </GlassCard>
     </div>
   )
 }

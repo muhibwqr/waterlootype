@@ -58,3 +58,64 @@
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer components {
+  .glass {
+    @apply relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl shadow-xl shadow-blue-500/10;
+  }
+
+  .glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .glass:hover::before {
+    opacity: 1;
+  }
+
+  .hover-lift {
+    @apply transition duration-300 ease-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 45px rgba(59, 130, 246, 0.18);
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-sky-400 via-purple-400 to-pink-400 bg-clip-text text-transparent;
+  }
+
+  .animate-fade-in {
+    animation: fade-in-up 0.7s ease forwards;
+  }
+
+  .section-badge {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-300;
+  }
+
+  .section-shell {
+    @apply mx-auto w-full max-w-6xl px-6;
+  }
+
+  .muted-copy {
+    @apply text-sm leading-relaxed text-slate-300;
+  }
+}
+

@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { LeaderboardEntry, FacultyEntry } from '@/types/database'
 import { ArrowRight, GraduationCap, Medal, Sparkles, Trophy, Users } from 'lucide-react'
+import { GlassCard } from '@/components/ui/GlassCard'
 
 export default function Leaderboard(): JSX.Element {
   const [individualEntries, setIndividualEntries] = useState<LeaderboardEntry[]>([])
@@ -88,18 +89,17 @@ export default function Leaderboard(): JSX.Element {
     }
   }
 
-  const getRankColor = (rank: number): string => {
-    if (rank === 1) return 'border-blue-400/60 bg-blue-500/10'
-    if (rank === 2) return 'border-purple-400/60 bg-purple-500/10'
-    if (rank === 3) return 'border-amber-400/60 bg-amber-500/10'
-    return 'border-slate-800 bg-slate-900/70'
-  }
-
   const getRankIcon = (rank: number): ReactNode => {
     if (rank === 1) return <Trophy className="h-5 w-5 text-blue-200" />
     if (rank === 2) return <Medal className="h-5 w-5 text-purple-200" />
     if (rank === 3) return <Sparkles className="h-5 w-5 text-amber-200" />
     return <span className="text-xs font-semibold text-slate-300">#{rank}</span>
+  }
+
+  const rankTone = (rank?: number): 'default' | 'primary' | 'accent' => {
+    if (rank === 1) return 'primary'
+    if (rank === 2) return 'accent'
+    return 'default'
   }
 
   const handleShare = async (entry: LeaderboardEntry): Promise<void> => {
@@ -122,15 +122,15 @@ export default function Leaderboard(): JSX.Element {
 
   if (loading) {
     return (
-      <div className="relative rounded-3xl border border-slate-800 bg-slate-950/80 p-10 text-center text-slate-300 shadow-2xl shadow-blue-500/10">
+      <GlassCard interactive={false} muted className="relative p-10 text-center text-slate-300 shadow-2xl shadow-blue-500/10">
         <div className="mx-auto h-12 w-12 animate-spin rounded-full border-2 border-blue-500/40 border-t-blue-400" />
         <p className="mt-4 text-sm text-slate-400">Loading leaderboard…</p>
-      </div>
+      </GlassCard>
     )
   }
 
   return (
-    <div className="relative rounded-3xl border border-slate-800 bg-slate-950/80 p-8 text-slate-100 shadow-2xl shadow-purple-500/10">
+    <GlassCard interactive={false} muted className="relative p-8 text-slate-100 shadow-2xl shadow-purple-500/10">
       <div className="absolute inset-x-6 top-6 -z-10 h-32 rounded-3xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-3xl" aria-hidden />
 
       <header className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
@@ -186,9 +186,10 @@ export default function Leaderboard(): JSX.Element {
             />
           ) : (
             individualEntries.map((entry) => (
-              <article
+              <GlassCard
                 key={entry.id}
-                className={`relative overflow-hidden rounded-3xl border ${getRankColor(entry.rank || 0)} p-5 transition hover:scale-[1.01]`}
+                tone={rankTone(entry.rank)}
+                className="relative overflow-hidden p-5 transition hover:scale-[1.01]"
               >
                 <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
                   <div className="flex flex-1 items-center gap-4">
@@ -219,7 +220,7 @@ export default function Leaderboard(): JSX.Element {
                     </button>
                   </div>
                 </div>
-              </article>
+              </GlassCard>
             ))
           )}
         </div>
@@ -233,9 +234,10 @@ export default function Leaderboard(): JSX.Element {
             />
           ) : (
             facultyEntries.map((entry) => (
-              <article
+              <GlassCard
                 key={entry.faculty}
-                className={`flex flex-col justify-between rounded-3xl border ${getRankColor(entry.rank || 0)} p-5 transition hover:scale-[1.01]`}
+                tone={rankTone(entry.rank)}
+                className="flex flex-col justify-between p-5 transition hover:scale-[1.01]"
               >
                 <div className="flex items-center gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-800 bg-slate-950/80">
@@ -258,23 +260,23 @@ export default function Leaderboard(): JSX.Element {
                     Faculty pride
                   </div>
                 </div>
-              </article>
+              </GlassCard>
             ))
           )}
         </div>
       )}
-    </div>
+    </GlassCard>
   )
 }
 
 function EmptyState({ icon, title, description }: { icon: ReactNode; title: string; description: string }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-slate-800 bg-slate-950/60 p-12 text-center text-slate-300">
+    <GlassCard interactive={false} muted className="flex flex-col items-center justify-center border-dashed border-white/10 p-12 text-center text-slate-300">
       <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-slate-900/70">
         {icon}
       </div>
       <p className="text-lg font-semibold text-white">{title}</p>
       <p className="mt-2 max-w-sm text-sm text-slate-400">{description}</p>
-    </div>
+    </GlassCard>
   )
 }

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { TypedUser } from '@/types/supabase'
 import { CheckCircle2, Shield, Trophy, Zap } from 'lucide-react'
+import { GlassCard } from '@/components/ui/GlassCard'
 
 const PASSAGES: readonly string[] = [
   "Waterloo co-op is the ultimate hustle. Six work terms, endless applications, and the dream of landing that Cali-or-bust internship. We grind through LeetCode, polish our resumes, and type cover letters faster than we type code.",
@@ -147,7 +148,11 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
   }
 
   return (
-    <div className="relative mb-12 overflow-hidden rounded-3xl border border-slate-800 bg-slate-950/80 p-6 text-slate-100 shadow-2xl shadow-blue-500/10 md:p-10">
+    <GlassCard
+      tone="default"
+      interactive={false}
+      className="relative mb-12 overflow-hidden p-6 text-slate-100 shadow-2xl shadow-blue-500/10 md:p-10"
+    >
       <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-blue-500/10 blur-3xl" aria-hidden />
       <div className="absolute -bottom-20 -left-16 h-52 w-52 rounded-full bg-purple-500/10 blur-3xl" aria-hidden />
 
@@ -171,7 +176,11 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
         </div>
       </header>
 
-      <section className="relative rounded-3xl border border-slate-800 bg-slate-950/80 p-6 shadow-inner shadow-slate-900">
+      <GlassCard
+        interactive={false}
+        muted
+        className="relative p-6 shadow-inner shadow-slate-900"
+      >
         <div className="mb-4 flex items-center justify-between text-xs uppercase tracking-[0.3em] text-slate-400">
           <span>Waterloo-themed passage</span>
           <span className="inline-flex items-center gap-2 font-semibold text-blue-300">
@@ -224,7 +233,7 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
             </span>
           </div>
         </div>
-      </section>
+      </GlassCard>
 
       <footer className="relative mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap gap-2">
@@ -264,12 +273,12 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
       </footer>
 
       {message && (
-        <div className="relative mt-6 rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4 text-sm text-blue-200">
+        <GlassCard tone="primary" interactive={false} className="relative mt-6 border-blue-500/30 bg-blue-500/10 p-4 text-sm text-blue-50">
           <CheckCircle2 className="mr-2 inline h-4 w-4 align-text-bottom" />
           {message}
-        </div>
+        </GlassCard>
       )}
-    </div>
+    </GlassCard>
   )
 }
 
@@ -318,14 +327,14 @@ function StatTile({
   accent: string
 }) {
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-950/70 p-4 shadow-inner shadow-slate-900">
+    <GlassCard interactive={false} muted className="p-4">
       <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">{label}</p>
       <p
         className={`mt-2 text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r ${accent}`}
       >
         {value}
       </p>
-    </div>
+    </GlassCard>
   )
 }
 

@@ -13,6 +13,7 @@ import {
   Zap,
 } from 'lucide-react'
 import Auth from './Auth'
+import { GlassCard } from '@/components/ui/GlassCard'
 
 const FEATURES = [
   {
@@ -20,18 +21,21 @@ const FEATURES = [
     title: 'Test Your Speed',
     description:
       'Practice with Waterloo-themed prompts about co-op, internships, and the Cali grind.',
+    tone: 'primary' as const,
   },
   {
     icon: <Trophy className="h-5 w-5" />,
     title: 'Compete & Climb',
     description:
       'Chase the leaderboard and unlock Diamond, Gold, and Bronze bragging rights.',
+    tone: 'default' as const,
   },
   {
     icon: <GraduationCap className="h-5 w-5" />,
     title: 'Faculty Pride',
     description:
       'See which faculty is topping the charts in real time and represent your crew.',
+    tone: 'accent' as const,
   },
 ]
 
@@ -73,7 +77,7 @@ export default function LandingPage(): JSX.Element {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-slate-900 text-slate-100">
       <header className="sticky top-0 z-30 border-b border-slate-800/60 bg-black/40 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <div className="section-shell flex items-center justify-between py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 shadow-lg shadow-blue-500/30">
               <Keyboard className="h-5 w-5 text-white" />
@@ -103,10 +107,10 @@ export default function LandingPage(): JSX.Element {
         </div>
       </header>
 
-      <main className="mx-auto flex max-w-6xl flex-col gap-20 px-6 pb-24 pt-16 lg:pt-24">
-        <section className="grid items-center gap-12 lg:grid-cols-[1.3fr,1fr]">
+      <main className="section-shell flex flex-col gap-20 pb-24 pt-16 lg:pt-24">
+        <section className="grid items-center gap-12 lg:grid-cols-[1.25fr,1fr]">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-slate-300/70">
+            <div className="section-badge">
               <Sparkles className="h-3.5 w-3.5 text-blue-400" />
               Built for Warriors
             </div>
@@ -150,7 +154,7 @@ export default function LandingPage(): JSX.Element {
           </div>
           <div className="relative">
             <div className="absolute -inset-6 rounded-3xl bg-gradient-to-r from-blue-500/40 via-purple-500/30 to-pink-500/30 blur-3xl"></div>
-            <div className="relative rounded-3xl border border-slate-800 bg-slate-950/70 p-6 shadow-2xl shadow-blue-500/10">
+            <GlassCard tone="primary" className="relative p-6 text-sm text-slate-200 shadow-2xl shadow-blue-500/10">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900">
@@ -174,7 +178,7 @@ export default function LandingPage(): JSX.Element {
                 <Stat label="Accuracy" value="98%" />
                 <Stat label="Time" value="00:57" />
               </div>
-            </div>
+            </GlassCard>
           </div>
         </section>
 
@@ -185,7 +189,7 @@ export default function LandingPage(): JSX.Element {
         </section>
 
         <section className="grid gap-10 lg:grid-cols-[1.1fr,1fr]">
-          <div className="rounded-3xl border border-slate-800 bg-slate-950/70 p-8 shadow-2xl shadow-blue-500/10">
+          <GlassCard muted className="p-8 shadow-2xl shadow-blue-500/10">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-300/70">
               How it works
             </p>
@@ -199,8 +203,8 @@ export default function LandingPage(): JSX.Element {
                 <StepCard key={step.number} {...step} />
               ))}
             </div>
-          </div>
-          <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-8 shadow-2xl shadow-purple-500/10">
+          </GlassCard>
+          <GlassCard tone="primary" className="p-8 shadow-2xl shadow-purple-500/10">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-purple-300/70">Tiers</p>
             <h3 className="mt-4 text-3xl font-bold text-white sm:text-4xl">Earn your badge</h3>
             <p className="mt-3 text-base text-slate-300">
@@ -212,7 +216,7 @@ export default function LandingPage(): JSX.Element {
                 <TierCard key={tier.title} {...tier} />
               ))}
             </div>
-          </div>
+          </GlassCard>
         </section>
 
         <section className="rounded-3xl border border-slate-800 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 p-12 text-center shadow-2xl shadow-blue-500/20">
@@ -269,20 +273,21 @@ function FeatureCard({
   icon,
   title,
   description,
+  tone,
 }: {
   icon: ReactNode
   title: string
   description: string
+  tone: 'default' | 'primary' | 'accent'
 }) {
   return (
-    <div className="group relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-950/80 p-7 transition hover:border-blue-500/50 hover:bg-slate-900/70">
-      <div className="absolute inset-0 -z-10 opacity-0 blur-3xl transition group-hover:opacity-100" />
+    <GlassCard tone={tone} className="group relative overflow-hidden p-7">
       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-blue-200">
         {icon}
       </div>
       <h3 className="mt-6 text-xl font-semibold text-white">{title}</h3>
       <p className="mt-3 text-sm leading-relaxed text-slate-300">{description}</p>
-    </div>
+    </GlassCard>
   )
 }
 
@@ -296,7 +301,7 @@ function StepCard({
   description: string
 }) {
   return (
-    <div className="flex items-start gap-5 rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition hover:border-blue-500/40 hover:bg-slate-900/80">
+    <GlassCard muted className="flex items-start gap-5 p-5">
       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/30 via-purple-500/30 to-pink-500/30 text-sm font-semibold text-blue-200">
         {number}
       </div>
@@ -304,7 +309,7 @@ function StepCard({
         <h4 className="text-lg font-semibold text-white">{title}</h4>
         <p className="mt-2 text-sm text-slate-300">{description}</p>
       </div>
-    </div>
+    </GlassCard>
   )
 }
 
@@ -318,7 +323,7 @@ function TierCard({
   caption: string
 }) {
   return (
-    <div className="flex items-center gap-4 rounded-2xl border border-slate-800 bg-slate-900/70 p-4 transition hover:border-purple-500/40 hover:bg-slate-900/80">
+    <GlassCard muted className="flex items-center gap-4 p-4">
       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950/70 text-purple-200">
         {icon}
       </div>
@@ -326,7 +331,7 @@ function TierCard({
         <p className="text-base font-semibold text-white">{title}</p>
         <p className="text-sm text-slate-300">{caption}</p>
       </div>
-    </div>
+    </GlassCard>
   )
 }
 
