@@ -65,7 +65,7 @@ export default function Auth(): JSX.Element {
       >
         <div className="grid gap-0 lg:grid-cols-[1.15fr,0.85fr]">
           <div className="flex flex-col items-center px-8 py-12">
-            <header className="mb-10 space-y-4">
+            <header className="mb-10 space-y-4 text-center">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-500 shadow-lg shadow-blue-500/40">
                 <Sparkles className="h-6 w-6 text-white" />
               </div>
@@ -142,26 +142,26 @@ export default function Auth(): JSX.Element {
             </div>
           </div>
 
-          <aside className="relative hidden overflow-hidden border-l border-white/5 bg-gradient-to-br from-slate-950 via-slate-900 to-black/80 p-8 text-left lg:flex lg:flex-col">
+          <aside className="relative hidden overflow-hidden border-l border-white/5 bg-gradient-to-br from-slate-950 via-slate-900 to-black/80 p-8 text-center lg:flex lg:flex-col lg:items-center">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(37,99,235,0.25),transparent_60%)]" />
             <div className="absolute inset-4 rounded-3xl border border-white/10" aria-hidden />
 
-            <div className="relative z-10 space-y-6">
+            <div className="relative z-10 flex w-full flex-col items-center gap-6 text-center">
               <h2 className="text-xl font-semibold text-white">Why join WaterlooType?</h2>
-              <div className="space-y-4 text-sm text-slate-300">
-                <p>• Compete in live typing sprints tailored to Waterloo life.</p>
-                <p>• Earn badges and flex your rankings with friends.</p>
-                <p>• Track accuracy, WPM, and reaction heatmaps.</p>
-                <p>• 100% free for Warriors — magic link only, no password stress.</p>
+              <div className="space-y-3 text-sm text-slate-300">
+                <p>Compete in live typing sprints tailored to Waterloo life.</p>
+                <p>Earn badges and flex your rankings with friends.</p>
+                <p>Track accuracy, WPM, and reaction heatmaps.</p>
+                <p>100% free for Warriors — magic link only, no password stress.</p>
               </div>
 
               <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-xs leading-relaxed text-slate-200">
                 “WaterlooType turned our study sessions into a friendly competition. The leaderboard keeps us motivated — shoutout to the Diamond tier grinders in E7!”
               </div>
 
-              <div className="mt-8 flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-slate-500">
+              <div className="mt-4 flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-slate-500">
                 <span className="h-px flex-1 bg-slate-800" aria-hidden />
-                Onboarding takes ~30 seconds
+                Onboarding ~30 seconds
                 <span className="h-px flex-1 bg-slate-800" aria-hidden />
               </div>
             </div>

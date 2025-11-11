@@ -144,15 +144,13 @@ export default function Leaderboard(): JSX.Element {
             Track the fastest typists on campus and see which faculty is leading the charge.
           </p>
         </div>
-        <div className="flex justify-center">
-          <button
-            onClick={() => setActiveTab(activeTab === 'individuals' ? 'faculties' : 'individuals')}
-            className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-blue-500/60 hover:text-white"
-          >
-            Toggle view
-            <ArrowRight className="h-4 w-4" />
-          </button>
-        </div>
+        <button
+          onClick={() => setActiveTab(activeTab === 'individuals' ? 'faculties' : 'individuals')}
+          className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-blue-500/60 hover:text-white"
+        >
+          Toggle view
+          <ArrowRight className="h-4 w-4" />
+        </button>
       </header>
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
@@ -191,37 +189,33 @@ export default function Leaderboard(): JSX.Element {
               <GlassCard
                 key={entry.id}
                 tone={rankTone(entry.rank)}
-                className="relative overflow-hidden p-5 transition hover:scale-[1.01]"
+                className="relative flex flex-col items-center gap-4 overflow-hidden p-6 text-center transition hover:scale-[1.02]"
               >
-                <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-                  <div className="flex flex-1 items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-800 bg-slate-950/70">
-                      {getRankIcon(entry.rank || 0)}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="truncate text-lg font-semibold text-white">{entry.email}</p>
-                      <p className="truncate text-sm text-slate-300">
-                        {entry.program || 'Program unknown'} • {entry.faculty || 'Faculty TBD'}
-                      </p>
-                    </div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-800 bg-slate-950/70">
+                  {getRankIcon(entry.rank || 0)}
+                </div>
+                <div className="space-y-1">
+                  <p className="text-lg font-semibold text-white">{entry.email}</p>
+                  <p className="text-sm text-slate-300">
+                    {entry.program || 'Program unknown'} • {entry.faculty || 'Faculty TBD'}
+                  </p>
+                </div>
+                <div className="flex w-full flex-wrap items-center justify-center gap-6 text-sm text-slate-200">
+                  <div>
+                    <p className="text-3xl font-semibold text-white">{entry.wpm}</p>
+                    <p className="text-xs uppercase tracking-[0.3em] text-slate-400">WPM</p>
                   </div>
-                  <div className="flex items-center gap-6">
-                    <div className="text-right">
-                      <p className="text-3xl font-semibold text-white">{entry.wpm}</p>
-                      <p className="text-xs uppercase tracking-[0.3em] text-slate-400">WPM</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-xl font-semibold text-blue-100">{entry.accuracy.toFixed(1)}%</p>
-                      <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Accuracy</p>
-                    </div>
-                    <button
-                      onClick={() => handleShare(entry)}
-                      className="rounded-2xl border border-white/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:border-white/40"
-                    >
-                      Share
-                    </button>
+                  <div>
+                    <p className="text-xl font-semibold text-blue-100">{entry.accuracy.toFixed(1)}%</p>
+                    <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Accuracy</p>
                   </div>
                 </div>
+                <button
+                  onClick={() => handleShare(entry)}
+                  className="rounded-2xl border border-white/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:border-white/40"
+                >
+                  Share
+                </button>
               </GlassCard>
             ))
           )}
@@ -239,20 +233,18 @@ export default function Leaderboard(): JSX.Element {
               <GlassCard
                 key={entry.faculty}
                 tone={rankTone(entry.rank)}
-                className="flex flex-col justify-between p-5 transition hover:scale-[1.01]"
+                className="flex flex-col items-center gap-4 p-6 text-center transition hover:scale-[1.02]"
               >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-800 bg-slate-950/80">
-                    {getRankIcon(entry.rank || 0)}
-                  </div>
-                  <div>
-                    <p className="text-lg font-semibold text-white">{entry.faculty}</p>
-                    <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
-                      {entry.count} participant{entry.count === 1 ? '' : 's'}
-                    </p>
-                  </div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-800 bg-slate-950/80">
+                  {getRankIcon(entry.rank || 0)}
                 </div>
-                <div className="mt-4 flex items-end justify-between">
+                <div>
+                  <p className="text-lg font-semibold text-white">{entry.faculty}</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+                    {entry.count} participant{entry.count === 1 ? '' : 's'}
+                  </p>
+                </div>
+                <div className="flex flex-col items-center gap-3">
                   <div>
                     <p className="text-3xl font-semibold text-white">{entry.avgWpm}</p>
                     <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Avg WPM</p>

@@ -251,25 +251,23 @@ function HeroShowcase() {
     <div className="relative w-full max-w-3xl">
       <div className="absolute -inset-6 rounded-3xl bg-gradient-to-r from-blue-600/25 via-blue-500/15 to-indigo-600/25 blur-3xl" />
       <GlassCard tone="primary" className="relative overflow-hidden p-6 text-sm text-slate-200 shadow-2xl shadow-blue-600/20">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900">
-              <Keyboard className="h-5 w-5 text-blue-300" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-white">Live Test Spotlight</p>
-              <p className="text-xs text-slate-400">UW campus energy</p>
-            </div>
+        <div className="flex flex-col items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900">
+            <Keyboard className="h-5 w-5 text-blue-300" />
+          </div>
+          <div className="text-center">
+            <p className="text-sm font-semibold text-white">Live Test Spotlight</p>
+            <p className="text-xs text-slate-400">UW campus energy</p>
           </div>
           <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
             Glass UI preview
           </span>
         </div>
-        <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-black/40">
+        <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-black/40 text-center">
           <div className="relative h-48">
             <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-60" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-4">
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
               <p className="text-xs uppercase tracking-[0.3em] text-slate-300">Sample Run</p>
               <p className="text-lg font-semibold text-white">
                 “Engineering squad sprinted to <span className="gradient-text">143 WPM</span> in 60 seconds.”
@@ -299,8 +297,8 @@ function FeatureCard({
   tone: 'default' | 'primary' | 'accent'
 }) {
   return (
-    <GlassCard tone={tone} className="group relative overflow-hidden p-7">
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-blue-200">
+    <GlassCard tone={tone} className="group relative overflow-hidden p-7 text-center">
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-blue-200">
         {icon}
       </div>
       <h3 className="mt-6 text-xl font-semibold text-white">{title}</h3>
@@ -319,8 +317,8 @@ function StepCard({
   description: string
 }) {
   return (
-    <GlassCard muted className="flex items-center gap-5 p-5 text-left">
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600/50 via-blue-500/30 to-transparent text-sm font-semibold text-blue-100">
+    <GlassCard muted className="flex flex-col items-center gap-5 p-5 text-center">
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600/40 via-blue-500/25 to-transparent text-sm font-semibold text-blue-100">
         {number}
       </div>
       <div>
@@ -341,7 +339,7 @@ function TierCard({
   caption: string
 }) {
   return (
-    <GlassCard muted className="flex items-center gap-4 p-4">
+    <GlassCard muted className="flex items-center gap-4 p-4 text-center sm:flex-col">
       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950/70 text-blue-200">
         {icon}
       </div>
