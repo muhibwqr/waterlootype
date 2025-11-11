@@ -4,18 +4,17 @@
 
 @layer base {
   body {
-    @apply bg-black text-slate-100;
+    @apply bg-[#1a1a1a] text-white;
     background-image:
-      radial-gradient(at 0% 0%, rgba(30, 64, 175, 0.25) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(37, 99, 235, 0.18) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(2, 132, 199, 0.2) 0px, transparent 50%),
-      radial-gradient(at 0% 100%, rgba(30, 64, 175, 0.18) 0px, transparent 50%);
+      radial-gradient(at 15% 20%, rgba(255, 179, 0, 0.12) 0px, transparent 55%),
+      radial-gradient(at 80% 0%, rgba(79, 79, 79, 0.35) 0px, transparent 60%),
+      radial-gradient(at 50% 100%, rgba(255, 213, 79, 0.08) 0px, transparent 65%);
     background-attachment: fixed;
   }
 }
 
 * {
-  @apply border-gray-800;
+  @apply border-[#404040];
 }
 
 @keyframes gradient-shift {
@@ -70,8 +69,27 @@
 }
 
 @layer components {
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 1rem;
+    z-index: 100;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    background: rgba(255, 179, 0, 0.9);
+    color: #1a1a1a;
+    font-weight: 600;
+    transition: transform 0.2s ease;
+  }
+
+  .skip-link:focus {
+    left: 1rem;
+    transform: translateY(0);
+    outline: none;
+  }
+
   .glass {
-    @apply relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl shadow-xl shadow-blue-500/15;
+    @apply relative overflow-hidden rounded-[16px] border border-[#404040] bg-[#2d2d2d] backdrop-blur-xl shadow-[0_20px_45px_rgba(0,0,0,0.45)];
   }
 
   .glass::before {
@@ -79,7 +97,7 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.22), transparent 55%);
+    background: radial-gradient(circle at top left, rgba(255, 179, 0, 0.18), transparent 60%);
     opacity: 0;
     transition: opacity 0.4s ease;
     pointer-events: none;
@@ -95,11 +113,11 @@
 
   .hover-lift:hover {
     transform: translateY(-4px);
-    box-shadow: 0 18px 45px rgba(37, 99, 235, 0.22);
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.5);
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[#ffb300] via-[#ffd54f] to-[#ff8f00] bg-clip-text text-transparent;
   }
 
   .animate-fade-in {
@@ -107,7 +125,7 @@
   }
 
   .section-badge {
-    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-300;
+    @apply inline-flex items-center gap-2 rounded-full border border-[#404040] bg-[#2d2d2d] px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#e0e0e0];
   }
 
   .section-shell {
@@ -115,7 +133,26 @@
   }
 
   .muted-copy {
-    @apply text-sm leading-relaxed text-slate-300;
+    @apply text-sm leading-relaxed text-[#a0a0a0];
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-[12px] bg-gradient-to-r from-[#ffb300] via-[#ffd54f] to-[#ff8f00] px-6 py-3 font-semibold text-black transition-transform duration-200;
+  }
+
+  .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(255, 179, 0, 0.35);
+  }
+
+  .btn-gold:disabled {
+    @apply cursor-not-allowed bg-gradient-to-r from-[#333333] via-[#3d3d3d] to-[#2a2a2a] text-[#a0a0a0] shadow-none;
+    transform: none;
+  }
+
+  .focus-gold:focus-visible {
+    outline: 3px solid #ffb300;
+    outline-offset: 2px;
   }
 }
 

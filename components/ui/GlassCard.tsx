@@ -12,9 +12,9 @@ export interface GlassCardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const toneStyles: Record<GlassCardTone, string> = {
-  default: 'bg-white/5 border-white/10',
-  primary: 'bg-gradient-to-br from-blue-500/20 via-sky-500/10 to-indigo-500/20 border-blue-400/40',
-  accent: 'bg-gradient-to-br from-cyan-500/15 via-blue-500/10 to-slate-900/40 border-cyan-400/40',
+  default: 'bg-[#2d2d2d] border-[#404040]',
+  primary: 'bg-gradient-to-br from-[#2d2d2d] via-[#262626] to-[#1f1f1f] border-[#ffb300]/35',
+  accent: 'bg-gradient-to-br from-[#ffb300]/18 via-[#ff8f00]/12 to-[#2a2a2a] border-[#ffb300]/30',
 }
 
 export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(function GlassCard(
@@ -27,7 +27,7 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(function Gla
       className={cn(
         'glass',
         interactive && 'hover-lift',
-        muted ? 'border-white/5 bg-white/[0.03]' : toneStyles[tone],
+        muted ? 'border-[#404040] bg-[#262626]' : toneStyles[tone],
         className
       )}
       {...props}

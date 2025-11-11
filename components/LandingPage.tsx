@@ -1,74 +1,109 @@
 'use client'
 
-import { useState, type ReactNode } from 'react'
+import { useState } from 'react'
 import {
-  Activity,
   ArrowRight,
-  GraduationCap,
+  BarChart3,
   Keyboard,
-  Medal,
+  Lock,
+  Mail,
   Rocket,
-  Share2,
-  Shield,
+  ShieldCheck,
   Sparkles,
+  Star,
   Trophy,
+  Zap,
 } from 'lucide-react'
 import Auth from './Auth'
 import { GlassCard } from '@/components/ui/GlassCard'
 
-const FEATURES = [
+const NAV_LINKS = [
+  { label: 'Features', href: '#features' },
+  { label: 'How It Works', href: '#how-it-works' },
+  { label: 'Why Join', href: '#why-join' },
+  { label: 'FAQ', href: '#faq' },
+]
+
+const HOW_ITEMS = [
   {
-    icon: <Shield className="h-5 w-5" />,
-    title: 'Supabase-Powered Security',
-    description: 'Verify instantly with @uwaterloo.ca emails—no spambots, just Warriors.',
-    tone: 'primary' as const,
+    id: '01',
+    title: 'Verify in seconds',
+    description: 'Use your @uwaterloo.ca email. We keep it Warrior-only.',
+    icon: Mail,
   },
   {
-    icon: <Activity className="h-5 w-5" />,
-    title: 'Real-Time Typing Stats',
-    description: 'Track live WPM, accuracy, and streak stats as you sprint through prompts.',
-    tone: 'default' as const,
+    id: '02',
+    title: 'Sprint together',
+    description: 'Jump into real-time typing battles with live stats.',
+    icon: Zap,
   },
   {
-    icon: <Trophy className="h-5 w-5" />,
-    title: 'Leaderboard Glory',
-    description: 'Climb ranks and unlock Diamond, Gold, and Bronze badges worth bragging about.',
-    tone: 'default' as const,
-  },
-  {
-    icon: <Share2 className="h-5 w-5" />,
-    title: 'Shareable Wins',
-    description: 'Post your best runs, challenge classmates, and spark a typing rivalry.',
-    tone: 'accent' as const,
+    id: '03',
+    title: 'Climb the board',
+    description: 'Earn badges, bragging rights, and faculty dominance.',
+    icon: Rocket,
   },
 ]
 
-const STEPS = [
+const FEATURE_CALLOUTS = [
   {
-    number: '01',
-    title: 'Sign Up',
-    description:
-      'Create an account with your @uwaterloo.ca email. Add your program and faculty in seconds.',
+    title: 'Supabase security',
+    description: 'Magic link auth keeps Waterloo-only battles secure.',
+    icon: ShieldCheck,
   },
   {
-    number: '02',
-    title: 'Type & Track',
-    description:
-      'Fly through Waterloo-themed texts and get instant WPM, accuracy, and tier updates.',
+    title: 'Real-time stats',
+    description: 'Track WPM, accuracy, streaks, and personal bests live.',
+    icon: BarChart3,
   },
   {
-    number: '03',
-    title: 'Claim Your Spot',
-    description:
-      'Submit your score and watch the leaderboard react live. Flex your faculty dominance.',
+    title: 'Badges & leaderboards',
+    description: 'Unlock warrior-to-diamond badges and climb the ranks.',
+    icon: Trophy,
+  },
+  {
+    title: 'Share achievements',
+    description: 'One-click share cards to challenge classmates.',
+    icon: Sparkles,
   },
 ]
 
-const TIERS = [
-  { icon: <Shield className="h-5 w-5" />, title: 'Warrior', caption: 'Every typist starts here.' },
-  { icon: <Medal className="h-5 w-5" />, title: 'Bronze', caption: '85+ WPM with solid accuracy.' },
-  { icon: <Trophy className="h-5 w-5" />, title: 'Gold', caption: '110+ WPM and near-perfect focus.' },
-  { icon: <Sparkles className="h-5 w-5" />, title: 'Diamond', caption: '140+ WPM, untouchable reflexes.' },
+const WHY_ITEMS = [
+  {
+    title: 'Live Typing Sprints',
+    description: 'Head-to-head battles tuned for the Waterloo grind.',
+    icon: Zap,
+  },
+  {
+    title: 'Badges & Rankings',
+    description: 'Unlock Diamond, Gold, and more as you improve.',
+    icon: Trophy,
+  },
+  {
+    title: 'Track Performance',
+    description: 'Monitor WPM, accuracy, streaks, and improvements.',
+    icon: BarChart3,
+  },
+  {
+    title: '100% Free & Secure',
+    description: 'Supabase auth plus IAM best practices keep it safe.',
+    icon: Lock,
+  },
+]
+
+const FAQ_ITEMS = [
+  {
+    question: 'Who can join WaterlooType?',
+    answer: 'Any University of Waterloo student with a valid @uwaterloo.ca email address.',
+  },
+  {
+    question: 'Do I need to install anything?',
+    answer: 'Nope. WaterlooType runs in the browser and is optimized for both desktop and mobile.',
+  },
+  {
+    question: 'How do the badges work?',
+    answer: 'Crush higher WPM and accuracy thresholds to climb from Warrior to Diamond tiers.',
+  },
 ]
 
 export default function LandingPage(): JSX.Element {
@@ -79,165 +114,194 @@ export default function LandingPage(): JSX.Element {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-slate-900 text-slate-100">
-      <header className="sticky top-0 z-30 border-b border-slate-800/60 bg-black/60 backdrop-blur">
-        <div className="section-shell flex max-w-5xl items-center justify-between py-4">
+    <div className="min-h-screen bg-[#1a1a1a] text-white">
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
+
+      <header className="sticky top-0 z-50 border-b border-[#404040] bg-[rgba(26,26,26,0.85)] backdrop-blur">
+        <div className="section-shell flex max-w-6xl items-center justify-between py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-500 shadow-lg shadow-blue-500/40">
-              <Keyboard className="h-5 w-5 text-white" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-[14px] bg-[#2d2d2d]">
+              <Keyboard className="h-5 w-5 text-[#ffb300]" />
             </div>
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300/80">
-                WaterlooType
-              </p>
-              <p className="text-sm text-slate-400">The typing test for UWaterloo Warriors</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#ffb300]">WaterlooType</p>
+              <p className="text-sm text-[#a0a0a0]">Typing battles for Warriors</p>
             </div>
           </div>
+
+          <nav className="hidden items-center gap-8 text-sm font-medium text-[#e0e0e0] md:flex">
+            {NAV_LINKS.map((link) => (
+              <a key={link.href} href={link.href} className="focus-gold transition hover:text-white">
+                {link.label}
+              </a>
+            ))}
+          </nav>
+
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowAuth(true)}
-              className="hidden rounded-full border border-slate-700/60 px-4 py-2 text-sm font-medium text-slate-300 transition hover:border-blue-500/60 hover:text-white sm:block"
+              className="hidden rounded-[12px] border border-[#404040] px-4 py-2 text-sm font-semibold text-[#e0e0e0] transition hover:border-[#ffb300] hover:text-white focus-gold md:inline-flex"
             >
               Sign In
             </button>
-            <button
-              onClick={() => setShowAuth(true)}
-              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-500 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/40 transition hover:scale-[1.03]"
-            >
-              <Rocket className="h-4 w-4" />
+            <button onClick={() => setShowAuth(true)} className="btn-gold focus-gold px-5 py-2 text-sm">
               Get Started
             </button>
           </div>
         </div>
       </header>
 
-      <main className="section-shell flex max-w-5xl flex-col items-center gap-20 pb-20 pt-14 text-center">
-        <section className="flex w-full flex-col items-center gap-12">
-          <div className="flex flex-col items-center">
-            <div className="section-badge">
-              <Sparkles className="h-3.5 w-3.5 text-blue-400" />
-              Built for Warriors
+      <main id="main-content" className="section-shell flex max-w-6xl flex-col gap-[120px] pb-[96px] pt-[120px]">
+        <section
+          id="hero"
+          className="relative flex flex-col items-center gap-10 overflow-hidden rounded-[24px] border border-[#404040] bg-[#1f1f1f]/60 p-10 text-center shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
+        >
+          <div className="absolute -top-20 left-1/2 h-[320px] w-[320px] -translate-x-1/2 rounded-full bg-[#ffb300]/10 blur-3xl" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,179,0,0.12),transparent_70%)]" aria-hidden />
+          <div className="relative flex flex-col items-center gap-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#404040] bg-[#2d2d2d] px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-[#e0e0e0]">
+              <Sparkles className="h-4 w-4 text-[#ffb300]" />
+              Exclusive to UWaterloo
             </div>
-            <h1 className="mt-6 max-w-3xl text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
-              Fastest Fingers at Waterloo? Prove it on <span className="gradient-text">WaterlooType</span>!
+            <h1 className="text-[42px] font-extrabold leading-[1.1] text-white md:text-[56px] lg:text-[64px]">
+              Join the Fastest Students at <span className="gradient-text">Waterloo</span>
             </h1>
-            <p className="mt-5 max-w-2xl text-lg text-slate-300">
-              Compete with fellow UW students in real-time typing tests, track your WPM and accuracy, and climb
-              the leaderboard. Only @uwaterloo.ca emails can join.
+            <p className="max-w-2xl text-lg text-[#e0e0e0]">
+              Real-time typing battles, exclusive badges, and competitive leaderboards for UWaterloo students.
+              Only @uwaterloo.ca emails invited.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center sm:gap-5">
-              <button
-                onClick={() => setShowAuth(true)}
-                className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-500 px-6 py-3 text-base font-semibold text-white shadow-xl shadow-blue-500/40 transition hover:scale-[1.03]"
-              >
-                <Rocket className="h-5 w-5" />
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <button onClick={() => setShowAuth(true)} className="btn-gold focus-gold text-base">
                 Sign Up with Waterloo Email
               </button>
               <button
                 onClick={() => setShowAuth(true)}
-                className="group flex items-center justify-center gap-2 rounded-2xl border border-slate-700/60 px-6 py-3 text-base font-semibold text-slate-200 transition hover:border-blue-500/60 hover:text-white"
+                className="focus-gold inline-flex items-center justify-center gap-2 rounded-[12px] border border-[#404040] px-6 py-3 text-base font-semibold text-[#e0e0e0] transition hover:border-[#ffb300] hover:text-white"
               >
                 Explore the experience
-                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                <ArrowRight className="h-4 w-4" />
               </button>
             </div>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-slate-400">
-              <span className="inline-flex items-center gap-1 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-blue-200">
-                <Shield className="h-4 w-4" />
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-[#a0a0a0]">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#404040] bg-[#2d2d2d] px-3 py-1">
+                <ShieldCheck className="h-4 w-4 text-[#ffb300]" />
                 @uwaterloo.ca required
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-blue-200">
-                <Sparkles className="h-4 w-4" />
-                Free forever
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#404040] bg-[#2d2d2d] px-3 py-1">
+                <Sparkles className="h-4 w-4 text-[#ffb300]" />
+                100% free
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-blue-200">
-                <Rocket className="h-4 w-4" />
-                Built by Warriors
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#404040] bg-[#2d2d2d] px-3 py-1">
+                <Rocket className="h-4 w-4 text-[#ffb300]" />
+                Built for Warriors
               </span>
             </div>
           </div>
           <HeroShowcase />
         </section>
 
-        <section className="grid w-full max-w-4xl gap-6 sm:grid-cols-2">
-          {FEATURES.map((feature) => (
-            <FeatureCard key={feature.title} {...feature} />
-          ))}
+        <section id="how-it-works" className="flex flex-col items-center gap-8 text-center">
+          <h2 className="text-[36px] font-bold text-white">How it works</h2>
+          <p className="max-w-2xl text-[#a0a0a0]">
+            Sign up, sprint, and climb the leaderboard—all in under a minute.
+          </p>
+          <div className="grid w-full gap-6 md:grid-cols-3">
+            {HOW_ITEMS.map((item) => (
+              <HowCard key={item.title} {...item} />
+            ))}
+          </div>
         </section>
 
-        <section className="grid w-full max-w-4xl gap-8 lg:grid-cols-2">
-          <GlassCard muted className="p-8 text-center shadow-2xl shadow-blue-500/10">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-300/70">
-              How it works
+        <section id="features" className="flex flex-col items-center gap-8 text-center">
+          <h2 className="text-[36px] font-bold text-white">Built for typists on a mission</h2>
+          <p className="max-w-2xl text-[#a0a0a0]">
+            Everything you need to compete, measure, and win—engineered for UW students.
+          </p>
+          <div className="grid w-full gap-6 md:grid-cols-2">
+            {FEATURE_CALLOUTS.map((item) => (
+              <WhyCard key={item.title} {...item} />
+            ))}
+          </div>
+        </section>
+
+        <section id="why-join" className="flex flex-col items-center gap-10">
+          <GlassCard interactive={false} className="w-full max-w-3xl bg-[#262626] p-12 text-center">
+            <h2 className="text-[36px] font-bold text-white">Why Join WaterlooType?</h2>
+            <p className="mt-4 text-lg text-[#e0e0e0]">
+              Join hundreds of Warriors pushing their WPM, sharing wins, and unlocking badges—without leaving
+              the browser.
             </p>
-            <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">Launch in three quick steps</h2>
-            <p className="mt-3 max-w-xl text-base text-slate-300">
-              Log in with your UWaterloo email, crush a typing test, and share your spot with teammates.
-              We’ll handle the stats, you bring the speed.
-            </p>
-            <div className="mt-10 space-y-6">
-              {STEPS.map((step) => (
-                <StepCard key={step.number} {...step} />
+            <div className="mt-10 grid gap-6 md:grid-cols-2">
+              {WHY_ITEMS.map((item) => (
+                <BenefitCard key={item.title} {...item} />
               ))}
             </div>
           </GlassCard>
-          <GlassCard tone="primary" className="p-8 text-center shadow-2xl shadow-blue-500/15">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-200/80">Tiers</p>
-            <h3 className="mt-4 text-3xl font-bold text-white sm:text-4xl">Earn your badge</h3>
-            <p className="mt-3 text-base text-slate-300">
-              Every score unlocks a new tier. Keep improving to climb from Warrior to Diamond and make your
-              faculty proud.
-            </p>
-            <div className="mt-8 space-y-4">
-              {TIERS.map((tier) => (
-                <TierCard key={tier.title} {...tier} />
-              ))}
-            </div>
-          </GlassCard>
         </section>
 
-        <section className="w-full rounded-3xl border border-slate-800 bg-gradient-to-r from-blue-600/20 via-blue-500/10 to-indigo-600/20 p-12 text-center shadow-2xl shadow-blue-600/20">
-          <div className="mx-auto max-w-3xl">
-            <h3 className="text-3xl font-bold text-white sm:text-4xl">
-              Ready to out-type every co-op hopeful on campus?
-            </h3>
-            <p className="mt-3 text-lg text-slate-200">
-              Join the typing sprint Waterloo students talk about on the walk between E7 and DC. It’s fast,
-              free, and fuelled by competition.
-            </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <button
-                onClick={() => setShowAuth(true)}
-                className="flex min-w-[220px] items-center justify-center gap-2 rounded-2xl bg-blue-500/20 px-6 py-3 text-base font-semibold text-white backdrop-blur transition hover:bg-blue-500/30"
-              >
-                <Rocket className="h-5 w-5" />
-                Start Typing Now
-              </button>
-              <button
-                onClick={() => setShowAuth(true)}
-                className="flex min-w-[220px] items-center justify-center gap-2 rounded-2xl border border-white/20 px-6 py-3 text-base font-semibold text-slate-200 transition hover:border-blue-400/60 hover:text-white"
-              >
-                <ArrowRight className="h-4 w-4" />
-                See Leaderboard
-              </button>
-            </div>
-            <p className="mt-5 text-xs uppercase tracking-[0.3em] text-slate-300/70">
-              Only @uwaterloo.ca emails accepted • Free forever
-            </p>
+        <section id="testimonial" className="flex flex-col items-center gap-8 rounded-[24px] border border-[#404040] bg-[#1f1f1f] p-12 text-center shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
+          <Sparkles className="h-8 w-8 text-[#ffb300]" />
+          <p className="max-w-3xl text-[24px] italic text-[#e0e0e0]">
+            “WaterlooType turned late-night study sessions into competitive typing sprints. We keep the leaderboard open in E7 just to see who can steal Diamond next.”
+          </p>
+          <div className="flex items-center gap-2 text-sm text-[#a0a0a0]">
+            {Array.from({ length: 5 }).map((_, idx) => (
+              <Star key={idx} className="h-5 w-5 fill-[#ffb300] text-[#ffb300]" />
+            ))}
+          </div>
+          <p className="text-sm text-[#a0a0a0]">— Anonymous Diamond Tier Grinder, E7</p>
+        </section>
+
+        <section id="faq" className="flex flex-col items-center gap-6 text-center">
+          <h2 className="text-[36px] font-bold text-white">FAQ</h2>
+          <div className="flex w-full flex-col gap-4">
+            {FAQ_ITEMS.map((item) => (
+              <GlassCard key={item.question} interactive={false} muted className="px-6 py-5 text-left">
+                <h3 className="text-lg font-semibold text-white">{item.question}</h3>
+                <p className="mt-2 text-sm text-[#a0a0a0]">{item.answer}</p>
+              </GlassCard>
+            ))}
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-slate-800/60 bg-black/60 py-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm text-slate-500 sm:flex-row">
-          <span>© {new Date().getFullYear()} WaterlooType • Built by Waterloo Warriors</span>
-          <div className="flex items-center gap-4">
-            <a href="#" className="transition hover:text-white">
+      <footer className="border-t border-[#404040] bg-[#0d0d0d] py-10">
+        <div className="section-shell grid max-w-6xl gap-8 text-sm text-[#a0a0a0] md:grid-cols-3">
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <div className="flex h-9 w-9 items-center justify-center rounded-[12px] bg-[#2d2d2d]">
+                <Keyboard className="h-4 w-4 text-[#ffb300]" />
+              </div>
+              <span className="font-semibold text-white">WaterlooType</span>
+            </div>
+            <p className="text-xs text-[#7a7a7a]">Made with ⌨️ for Waterloo Warriors</p>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <span className="text-sm font-semibold text-white">Links</span>
+            <a href="#features" className="focus-gold transition hover:text-white">
+              Features
+            </a>
+            <a href="#how-it-works" className="focus-gold transition hover:text-white">
+              How It Works
+            </a>
+            <a href="#faq" className="focus-gold transition hover:text-white">
+              FAQ
+            </a>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <span className="text-sm font-semibold text-white">Legal</span>
+            <a href="#" className="focus-gold transition hover:text-white">
+              Privacy
+            </a>
+            <a href="#" className="focus-gold transition hover:text-white">
               Terms
             </a>
-            <span className="h-1 w-1 rounded-full bg-slate-700" aria-hidden />
-            <a href="#" className="transition hover:text-white">
-              Privacy
+            <a href="mailto:team@waterlootype.ca" className="focus-gold transition hover:text-white">
+              Contact
             </a>
           </div>
         </div>
@@ -248,115 +312,107 @@ export default function LandingPage(): JSX.Element {
 
 function HeroShowcase() {
   return (
-    <div className="relative w-full max-w-3xl">
-      <div className="absolute -inset-6 rounded-3xl bg-gradient-to-r from-blue-600/25 via-blue-500/15 to-indigo-600/25 blur-3xl" />
-      <GlassCard tone="primary" className="relative overflow-hidden p-6 text-sm text-slate-200 shadow-2xl shadow-blue-600/20">
-        <div className="flex flex-col items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900">
-            <Keyboard className="h-5 w-5 text-blue-300" />
-          </div>
-          <div className="text-center">
-            <p className="text-sm font-semibold text-white">Live Test Spotlight</p>
-            <p className="text-xs text-slate-400">UW campus energy</p>
-          </div>
-          <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
-            Glass UI preview
-          </span>
+    <GlassCard tone="primary" className="relative w-full max-w-3xl overflow-hidden bg-[#262626] p-6 text-center">
+      <div className="flex flex-col items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#1a1a1a]">
+          <Keyboard className="h-5 w-5 text-[#ffb300]" />
         </div>
-        <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-black/40 text-center">
-          <div className="relative h-48">
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-60" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-300">Sample Run</p>
-              <p className="text-lg font-semibold text-white">
-                “Engineering squad sprinted to <span className="gradient-text">143 WPM</span> in 60 seconds.”
-              </p>
-            </div>
-          </div>
+        <div>
+          <p className="text-sm font-semibold text-white">Live Test Spotlight</p>
+          <p className="text-xs text-[#a0a0a0]">UW campus energy in 60 seconds</p>
         </div>
-        <div className="mt-6 grid grid-cols-3 gap-3 text-center text-sm">
-          <Stat label="Peak WPM" value="143" />
-          <Stat label="Accuracy" value="98%" />
-          <Stat label="Rank" value="Diamond" />
-        </div>
-      </GlassCard>
-    </div>
-  )
-}
-
-function FeatureCard({
-  icon,
-  title,
-  description,
-  tone,
-}: {
-  icon: ReactNode
-  title: string
-  description: string
-  tone: 'default' | 'primary' | 'accent'
-}) {
-  return (
-    <GlassCard tone={tone} className="group relative overflow-hidden p-7 text-center">
-      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-blue-200">
-        {icon}
       </div>
-      <h3 className="mt-6 text-xl font-semibold text-white">{title}</h3>
-      <p className="mt-3 text-sm leading-relaxed text-slate-300">{description}</p>
-    </GlassCard>
-  )
-}
 
-function StepCard({
-  number,
-  title,
-  description,
-}: {
-  number: string
-  title: string
-  description: string
-}) {
-  return (
-    <GlassCard muted className="flex flex-col items-center gap-5 p-5 text-center">
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600/40 via-blue-500/25 to-transparent text-sm font-semibold text-blue-100">
-        {number}
+      <div className="mt-6 overflow-hidden rounded-[16px] border border-[#404040] bg-[#1a1a1a]">
+        <div className="relative h-48">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60" />
+          <div className="absolute bottom-0 left-0 right-0 p-4">
+            <p className="text-xs uppercase tracking-[0.4em] text-[#a0a0a0]">Sample Run</p>
+            <p className="text-lg font-semibold text-white">
+              “Engineering squad peaked at <span className="gradient-text">143 WPM</span> with 98% accuracy.”
+            </p>
+          </div>
+        </div>
       </div>
-      <div>
-        <h4 className="text-lg font-semibold text-white">{title}</h4>
-        <p className="mt-2 text-sm text-slate-300">{description}</p>
+
+      <div className="mt-6 grid grid-cols-3 gap-3 text-sm text-[#e0e0e0]">
+        <Stat label="Peak WPM" value="143" />
+        <Stat label="Accuracy" value="98%" />
+        <Stat label="Badge" value="Diamond" />
       </div>
     </GlassCard>
   )
 }
 
-function TierCard({
-  icon,
+function HowCard({
+  id,
   title,
-  caption,
+  description,
+  icon: Icon,
 }: {
-  icon: ReactNode
+  id: string
   title: string
-  caption: string
+  description: string
+  icon: typeof Mail
 }) {
   return (
-    <GlassCard muted className="flex items-center gap-4 p-4 text-center sm:flex-col">
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950/70 text-blue-200">
-        {icon}
+    <GlassCard muted className="flex flex-col items-center gap-4 bg-[#262626] p-6 text-center transition hover:border-[#ffb300]/40 hover:shadow-[0_20px_45px_rgba(0,0,0,0.4)]">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1a1a1a] text-[#ffb300]">
+        {Icon ? <Icon className="h-5 w-5" /> : null}
       </div>
-      <div>
-        <p className="text-base font-semibold text-white">{title}</p>
-        <p className="text-sm text-slate-300">{caption}</p>
+      <span className="text-sm font-semibold uppercase tracking-[0.4em] text-[#ffb300]">{id}</span>
+      <h3 className="text-lg font-semibold text-white">{title}</h3>
+      <p className="text-sm text-[#a0a0a0]">{description}</p>
+    </GlassCard>
+  )
+}
+
+function WhyCard({
+  title,
+  description,
+  icon: Icon,
+}: {
+  title: string
+  description: string
+  icon: typeof Zap
+}) {
+  return (
+    <GlassCard muted className="flex flex-col items-center gap-4 bg-[#262626] p-6 text-center transition hover:border-[#ffb300]/40 hover:shadow-[0_20px_45px_rgba(0,0,0,0.4)]">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1a1a1a] text-[#ffb300]">
+        <Icon className="h-5 w-5" />
       </div>
+      <h3 className="text-xl font-semibold text-white">{title}</h3>
+      <p className="text-sm text-[#a0a0a0]">{description}</p>
+    </GlassCard>
+  )
+}
+
+function BenefitCard({
+  title,
+  description,
+  icon: Icon,
+}: {
+  title: string
+  description: string
+  icon: typeof Zap
+}) {
+  return (
+    <GlassCard muted className="flex flex-col items-center gap-3 bg-[#2a2a2a] p-6 text-center transition hover:border-[#ffb300]/40 hover:shadow-[0_20px_45px_rgba(0,0,0,0.45)]">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1a1a1a] text-[#ffb300]">
+        <Icon className="h-5 w-5" />
+      </div>
+      <h4 className="text-lg font-semibold text-white">{title}</h4>
+      <p className="text-sm text-[#a0a0a0]">{description}</p>
     </GlassCard>
   )
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-      <div className="text-[11px] uppercase tracking-[0.3em] text-slate-400">{label}</div>
-      <div className="mt-1 text-xl font-semibold text-white">{value}</div>
+    <div className="rounded-[14px] border border-[#404040] bg-[#1a1a1a] p-4">
+      <p className="text-[11px] uppercase tracking-[0.4em] text-[#a0a0a0]">{label}</p>
+      <p className="mt-1 text-xl font-semibold text-white">{value}</p>
     </div>
   )
 }
-

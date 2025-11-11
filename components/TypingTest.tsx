@@ -158,21 +158,21 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
 
       <header className="relative mb-8 flex flex-col items-center gap-6 text-center">
         <div className="flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/70 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-blue-200/80">
-            <Zap className="h-3.5 w-3.5 text-blue-300" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#404040] bg-[#262626] px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#e0e0e0]">
+            <Zap className="h-3.5 w-3.5 text-[#ffb300]" />
             Live Typing Test
           </div>
           <h2 className="mt-5 text-3xl font-semibold text-white sm:text-4xl">WaterlooWorks Sprint</h2>
-          <p className="mt-2 max-w-2xl text-sm text-slate-300">
+          <p className="mt-2 max-w-2xl text-sm text-[#e0e0e0]">
             Lock in, focus on precision, and let speed follow. Scores update in real time—your next personal
             best is a reset away.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <StatTile label="Current WPM" value={Math.round(wpm)} accent="from-blue-500 to-blue-400" />
-          <StatTile label="Accuracy" value={`${accuracy.toFixed(1)}%`} accent="from-cyan-500 to-blue-400" />
-          <StatTile label="Elapsed" value={`${pad(minutes)}:${pad(seconds)}`} accent="from-slate-500 to-blue-500" />
-          <StatTile label="Personal Best" value={bestWpm} accent="from-indigo-500 to-blue-400" />
+          <StatTile label="Current WPM" value={Math.round(wpm)} accent="from-[#ffb300] to-[#ff8f00]" />
+          <StatTile label="Accuracy" value={`${accuracy.toFixed(1)}%`} accent="from-[#ffd54f] to-[#ffb300]" />
+          <StatTile label="Elapsed" value={`${pad(minutes)}:${pad(seconds)}`} accent="from-[#6d6d6d] to-[#ffb300]" />
+          <StatTile label="Personal Best" value={bestWpm} accent="from-[#ffb300] to-[#ffd54f]" />
         </div>
       </header>
 
@@ -181,23 +181,23 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
         muted
         className="relative p-6 shadow-inner shadow-slate-900"
       >
-        <div className="mb-4 flex flex-col items-center gap-2 text-xs uppercase tracking-[0.3em] text-slate-400 sm:flex-row sm:justify-between">
+        <div className="mb-4 flex flex-col items-center gap-2 text-xs uppercase tracking-[0.3em] text-[#a0a0a0] sm:flex-row sm:justify-between">
           <span>Waterloo-themed passage</span>
-          <span className="inline-flex items-center gap-2 font-semibold text-blue-300">
+          <span className="inline-flex items-center gap-2 font-semibold text-[#ffb300]">
             <Shield className="h-4 w-4" />
             {tier.label} Tier
           </span>
         </div>
-        <div className="min-h-[160px] rounded-2xl border border-slate-800 bg-slate-900/60 p-6 font-mono text-[15px] leading-relaxed text-slate-300">
+        <div className="min-h-[160px] rounded-2xl border border-[#404040] bg-[#262626] p-6 font-mono text-[15px] leading-relaxed text-[#e0e0e0]">
           {target.split('').map((char, index) => {
             const typedChar = typed[index]
-            let className = 'text-slate-500/80'
+            let className = 'text-[#7d7d7d]'
 
             if (typedChar != null) {
               className =
                 typedChar === char
-                  ? 'text-blue-200'
-                  : 'rounded bg-blue-500/20 px-[1px] text-white shadow-inner shadow-blue-500/40'
+                  ? 'text-[#ffb300]'
+                  : 'rounded bg-[#ff8f00]/20 px-[1px] text-white shadow-inner shadow-[#ffb300]/30'
             }
 
             return (
@@ -215,18 +215,18 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
           onPaste={(event) => event.preventDefault()}
           disabled={finished}
           placeholder={finished ? 'Great work! Reset to run it back.' : 'Start typing the passage above…'}
-          className="mt-6 w-full resize-none rounded-2xl border border-slate-800 bg-slate-950/70 p-5 font-mono text-base text-white shadow-lg shadow-blue-500/10 transition focus:border-blue-500/80 focus:outline-none focus:ring-2 focus:ring-blue-500/20 md:text-lg"
+          className="focus-gold mt-6 w-full resize-none rounded-2xl border border-[#404040] bg-[#1a1a1a] p-5 font-mono text-base text-white shadow-lg shadow-[rgba(0,0,0,0.45)] transition focus:border-[#ffb300] md:text-lg"
           rows={5}
         />
 
         <div className="mt-6">
-          <div className="relative h-2 overflow-hidden rounded-full bg-slate-800/70">
+          <div className="relative h-2 overflow-hidden rounded-full bg-[#333333]">
             <div
-              className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-500 transition-all"
+              className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-[#ffb300] via-[#ffd54f] to-[#ff8f00] transition-all"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <div className="mt-3 flex flex-wrap items-center justify-between text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+          <div className="mt-3 flex flex-wrap items-center justify-between text-xs font-semibold uppercase tracking-[0.3em] text-[#a0a0a0]">
             <span>Progress {Math.round(progress)}%</span>
             <span>
               {pad(minutes)}:{pad(seconds)}
@@ -239,7 +239,7 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
         <div className="flex flex-wrap justify-center gap-2">
           <button
             onClick={reset}
-            className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-blue-500/60 hover:text-white"
+            className="focus-gold inline-flex items-center gap-2 rounded-2xl border border-[#404040] bg-[#1a1a1a] px-4 py-2 text-sm font-semibold text-[#e0e0e0] transition hover:border-[#ffb300] hover:text-white"
           >
             <Zap className="h-4 w-4" />
             New Passage
@@ -253,27 +253,27 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
               setMessage(null)
               inputRef.current?.focus()
             }}
-            className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-blue-400/60 hover:text-white"
+            className="focus-gold inline-flex items-center gap-2 rounded-2xl border border-[#404040] px-4 py-2 text-sm font-semibold text-[#e0e0e0] transition hover:border-[#ffb300] hover:text-white"
           >
             Reset Run
           </button>
           <button
             onClick={submitScore}
             disabled={saving}
-            className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:scale-[1.03] disabled:cursor-not-allowed disabled:opacity-60"
+            className="btn-gold focus-gold inline-flex items-center gap-2 px-5 py-2 text-sm disabled:translate-y-0"
           >
             <Trophy className="h-4 w-4" />
             {saving ? 'Submitting…' : 'Submit Score'}
           </button>
         </div>
-        <div className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-2 text-slate-300">
-          <Shield className="h-4 w-4 text-blue-300" />
+        <div className="flex items-center gap-3 rounded-2xl border border-[#404040] bg-[#1a1a1a] px-4 py-2 text-sm text-[#e0e0e0]">
+          <Shield className="h-4 w-4 text-[#ffb300]" />
           Stay relaxed, lead with accuracy. Speed follows focus.
         </div>
       </footer>
 
       {message && (
-        <GlassCard tone="primary" interactive={false} className="relative mt-6 border-blue-500/30 bg-blue-500/10 p-4 text-sm text-blue-50">
+        <GlassCard tone="primary" interactive={false} className="relative mt-6 border-[#ffb300]/40 bg-[#ffb300]/10 p-4 text-sm text-[#ffecb3]">
           <CheckCircle2 className="mr-2 inline h-4 w-4 align-text-bottom" />
           {message}
         </GlassCard>
@@ -327,8 +327,8 @@ function StatTile({
   accent: string
 }) {
   return (
-    <GlassCard interactive={false} muted className="p-4">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">{label}</p>
+    <GlassCard interactive={false} muted className="p-4 bg-[#262626]">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#a0a0a0]">{label}</p>
       <p
         className={`mt-2 text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r ${accent}`}
       >
