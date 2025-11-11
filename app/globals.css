@@ -4,43 +4,45 @@
 
 @layer base {
   :root {
-    --bg-primary: #0a0a0a;
-    --bg-secondary: #1a1a1a;
-    --bg-tertiary: #2d2d2d;
-    --bg-hover: #3a3a3a;
+    --bg-primary: 0 0% 4%;
+    --bg-secondary: 0 0% 10%;
+    --bg-tertiary: 0 0% 18%;
+    --bg-hover: 0 0% 23%;
 
-    --gold-primary: #ffd700;
-    --gold-hover: #ffc400;
-    --gold-muted: #b8860b;
-    --gold-glow: rgba(255, 215, 0, 0.3);
+    --gold-primary: 51 100% 50%;
+    --gold-hover: 48 100% 50%;
+    --gold-muted: 43 89% 37%;
+    --gold-glow: 51 100% 50%;
 
-    --text-primary: #ffffff;
-    --text-secondary: #e0e0e0;
-    --text-muted: #a0a0a0;
-    --text-disabled: #666666;
+    --text-primary: 0 0% 100%;
+    --text-secondary: 0 0% 88%;
+    --text-muted: 0 0% 63%;
+    --text-disabled: 0 0% 40%;
 
-    --accent-blue: #60a5fa;
-    --accent-green: #4ade80;
-    --accent-red: #f87171;
-    --accent-purple: #c084fc;
+    --accent-blue: 217 94% 70%;
+    --accent-green: 142 72% 62%;
+    --accent-red: 0 83% 67%;
+    --accent-purple: 270 92% 72%;
 
-    --border-subtle: #2d2d2d;
-    --border-default: #404040;
+    --border-subtle: 0 0% 18%;
+    --border-default: 0 0% 25%;
     --border-focus: var(--gold-primary);
 
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
-    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
-    --shadow-gold: 0 4px 24px var(--gold-glow);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.55);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.65);
+    --shadow-gold: 0 4px 24px hsla(51, 100%, 50%, 0.35);
+
+    --radius-full: 999px;
 
     --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
     --font-mono: 'Fira Code', 'JetBrains Mono', monospace;
   }
 
   body {
-    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-    color: var(--text-primary);
+    background: linear-gradient(135deg, hsl(var(--bg-primary)) 0%, hsl(var(--bg-secondary)) 100%);
+    color: hsl(var(--text-primary));
     font-family: var(--font-sans);
     line-height: 1.6;
     overflow-x: hidden;
@@ -48,7 +50,7 @@
 }
 
 * {
-  border-color: var(--border-default);
+  border-color: hsl(var(--border-default));
 }
 
 body::before {
@@ -100,7 +102,7 @@ body::before {
     z-index: 1000;
     padding: 0.75rem 1.5rem;
     border-radius: var(--radius-full);
-    background: var(--gold-primary);
+    background: hsl(var(--gold-primary));
     color: #1a1a1a;
     font-weight: 600;
     transition: transform 0.2s ease;
@@ -116,8 +118,8 @@ body::before {
     position: relative;
     overflow: hidden;
     border-radius: 16px;
-    border: 1px solid var(--border-default);
-    background: var(--bg-secondary);
+    border: 1px solid hsl(var(--border-default));
+    background: hsl(var(--bg-secondary));
     backdrop-filter: blur(18px);
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
   }
@@ -147,7 +149,7 @@ body::before {
   }
 
   .gradient-text {
-    background: linear-gradient(90deg, #ffffff 0%, var(--gold-primary) 50%, #ffffff 100%);
+    background: linear-gradient(90deg, #ffffff 0%, hsl(var(--gold-primary)) 50%, #ffffff 100%);
     -webkit-background-clip: text;
     color: transparent;
   }
@@ -171,7 +173,7 @@ body::before {
     gap: 0.5rem;
     border-radius: 999px;
     border: 1px solid var(--border-default);
-    background: var(--bg-tertiary);
+    background: hsl(var(--bg-tertiary));
     padding: 0.25rem 1rem;
     font-size: 0.75rem;
     font-weight: 600;
@@ -219,7 +221,7 @@ body::before {
     justify-content: center;
     gap: 0.5rem;
     border-radius: 12px;
-    background: linear-gradient(135deg, var(--gold-primary), var(--gold-hover));
+    background: linear-gradient(135deg, hsl(var(--gold-primary)), hsl(var(--gold-hover)));
     padding: 0.75rem 1.5rem;
     font-weight: 600;
     color: #1a1a1a;
@@ -250,27 +252,4 @@ body::before {
   }
 }
 
-.bg-primary {
-  background-color: var(--bg-primary);
-}
-
-.bg-secondary {
-  background-color: var(--bg-secondary);
-}
-
-.bg-tertiary {
-  background-color: var(--bg-tertiary);
-}
-
-.text-primary {
-  color: var(--text-primary);
-}
-
-.text-secondary {
-  color: var(--text-secondary);
-}
-
-.border-default {
-  border-color: var(--border-default);
-}
 
