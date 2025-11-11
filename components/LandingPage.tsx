@@ -4,6 +4,7 @@ import { useState } from 'react'
 import {
   ArrowRight,
   BarChart3,
+  ChevronsDown,
   Keyboard,
   Lock,
   Mail,
@@ -16,11 +17,12 @@ import {
 } from 'lucide-react'
 import Auth from './Auth'
 import { GlassCard } from '@/components/ui/GlassCard'
+import Leaderboard from './Leaderboard'
 
 const NAV_LINKS = [
   { label: 'Features', href: '#features' },
+  { label: 'Leaderboard', href: '#leaderboard' },
   { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Why Join', href: '#why-join' },
   { label: 'FAQ', href: '#faq' },
 ]
 
@@ -156,50 +158,59 @@ export default function LandingPage(): JSX.Element {
       <main id="main-content" className="section-shell flex max-w-6xl flex-col gap-[120px] pb-[96px] pt-[120px]">
         <section
           id="hero"
-          className="relative flex flex-col items-center gap-10 overflow-hidden rounded-[24px] border border-[#404040] bg-[#1f1f1f]/60 p-10 text-center shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
+          className="relative flex flex-col items-center gap-10 overflow-hidden rounded-[24px] border border-[#404040] bg-[#1f1f1f]/70 p-10 text-center shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
         >
-          <div className="absolute -top-20 left-1/2 h-[320px] w-[320px] -translate-x-1/2 rounded-full bg-[#ffb300]/10 blur-3xl" />
+          <div className="absolute top-1/4 -left-32 h-80 w-80 rounded-full bg-[#ffd700]/15 blur-3xl animate-pulse-slow" />
+          <div className="absolute bottom-1/4 -right-32 h-80 w-80 rounded-full bg-[#60a5fa]/15 blur-3xl animate-pulse-slow delay-1000" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,179,0,0.12),transparent_70%)]" aria-hidden />
+
           <div className="relative flex flex-col items-center gap-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#404040] bg-[#2d2d2d] px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-[#e0e0e0]">
-              <Sparkles className="h-4 w-4 text-[#ffb300]" />
-              Exclusive to UWaterloo
+            <div className="inline-flex items-center gap-3 rounded-full border border-[#404040] bg-[#1f1f1f] px-4 py-2 text-sm text-[#e0e0e0] shadow-[0_12px_30px_rgba(0,0,0,0.45)]">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ffd700] opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#ffd700]" />
+              </span>
+              <span>1,247 Warriors typing now</span>
             </div>
-            <h1 className="text-[42px] font-extrabold leading-[1.1] text-white md:text-[56px] lg:text-[64px]">
-              Join the Fastest Students at <span className="gradient-text">Waterloo</span>
+            <h1 className="text-[48px] font-black leading-tight md:text-[64px] lg:text-[72px]">
+              <span className="animate-gradient gradient-text">Type Faster.</span>
+              <br />
+              <span className="text-[#ffd700]">Beat Waterloo.</span>
             </h1>
-            <p className="max-w-2xl text-lg text-[#e0e0e0]">
-              Real-time typing battles, exclusive badges, and competitive leaderboards for UWaterloo students.
-              Only @uwaterloo.ca emails invited.
+            <p className="max-w-3xl text-xl text-[#e0e0e0]">
+              Real-time typing races, competitive leaderboards, and exclusive badges for{' '}
+              <span className="font-semibold text-[#ffd700]">UWaterloo students only.</span>
             </p>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <button onClick={() => setShowAuth(true)} className="btn-gold focus-gold text-base">
-                Sign Up with Waterloo Email
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
+              <button onClick={() => setShowAuth(true)} className="btn-gold focus-gold px-8 py-4 text-base">
+                Start Racing Now
               </button>
               <button
                 onClick={() => setShowAuth(true)}
-                className="focus-gold inline-flex items-center justify-center gap-2 rounded-[12px] border border-[#404040] px-6 py-3 text-base font-semibold text-[#e0e0e0] transition hover:border-[#ffb300] hover:text-white"
+                className="focus-gold relative inline-flex items-center justify-center gap-2 rounded-[12px] border-2 border-[#404040] px-8 py-4 text-base font-semibold text-[#e0e0e0] transition hover:border-[#ffd700] hover:text-[#ffd700]"
               >
-                Explore the experience
-                <ArrowRight className="h-4 w-4" />
+                Watch Demo →
               </button>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-[#a0a0a0]">
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#404040] bg-[#2d2d2d] px-3 py-1">
-                <ShieldCheck className="h-4 w-4 text-[#ffb300]" />
-                @uwaterloo.ca required
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#404040] bg-[#2d2d2d] px-3 py-1">
-                <Sparkles className="h-4 w-4 text-[#ffb300]" />
-                100% free
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#404040] bg-[#2d2d2d] px-3 py-1">
-                <Rocket className="h-4 w-4 text-[#ffb300]" />
-                Built for Warriors
-              </span>
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#a0a0a0]">
+              <div className="flex items-center gap-2">
+                <Zap className="h-4 w-4 text-[#ffd700]" />
+                <span>~30s onboarding</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-[#ffd700]" />
+                <span>100% free</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-[#ffd700]" />
+                <span>UWaterloo verified</span>
+              </div>
             </div>
           </div>
           <HeroShowcase />
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[#a0a0a0]">
+            <ChevronsDown className="h-6 w-6 animate-bounce" />
+          </div>
         </section>
 
         <section id="how-it-works" className="flex flex-col items-center gap-8 text-center">
@@ -357,13 +368,21 @@ function HowCard({
   icon: typeof Mail
 }) {
   return (
-    <GlassCard muted className="flex flex-col items-center gap-4 bg-[#262626] p-6 text-center transition hover:border-[#ffb300]/40 hover:shadow-[0_20px_45px_rgba(0,0,0,0.4)]">
-      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1a1a1a] text-[#ffb300]">
-        {Icon ? <Icon className="h-5 w-5" /> : null}
+    <GlassCard
+      muted
+      className="relative flex flex-col items-center gap-4 bg-[#262626] p-8 text-center transition hover:border-[#ffd700]/50 hover:shadow-[0_24px_55px_rgba(0,0,0,0.45)]"
+    >
+      <div className="absolute -top-4 -left-4 flex h-12 w-12 items-center justify-center rounded-[16px] bg-gradient-to-br from-[#ffd700] to-[#b8860b] text-xl font-bold text-[#1a1a1a] shadow-[0_10px_24px_rgba(0,0,0,0.45)]">
+        {id}
       </div>
-      <span className="text-sm font-semibold uppercase tracking-[0.4em] text-[#ffb300]">{id}</span>
-      <h3 className="text-lg font-semibold text-white">{title}</h3>
+      <div className="flex h-16 w-16 items-center justify-center rounded-[18px] bg-[#1a1a1a] text-[#ffd700]">
+        {Icon ? <Icon className="h-7 w-7" /> : null}
+      </div>
+      <h3 className="text-2xl font-semibold text-white">{title}</h3>
       <p className="text-sm text-[#a0a0a0]">{description}</p>
+      <div className="mt-4 w-full border-t border-[#2d2d2d] pt-4 text-xs uppercase tracking-[0.4em] text-[#7a7a7a]">
+        {id === '01' ? 'Takes 5 seconds' : id === '02' ? 'Arrives instantly' : 'Instant bragging rights'}
+      </div>
     </GlassCard>
   )
 }
