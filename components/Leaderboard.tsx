@@ -139,8 +139,8 @@ export default function Leaderboard(): JSX.Element {
             <Trophy className="h-3.5 w-3.5 text-[#ffb300]" />
             Leaderboard Live
           </div>
-          <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">Warriors on top</h2>
-          <p className="mt-2 text-sm text-[#a0a0a0]">
+          <h2 className="text-title text-[40px]">Warriors on Top</h2>
+          <p className="text-subtitle mt-2 text-[#a0a0a0]">
             Track the fastest typists on campus and see which faculty is leading the charge.
           </p>
         </div>

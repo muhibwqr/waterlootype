@@ -155,7 +155,7 @@ export default function LandingPage(): JSX.Element {
         </div>
       </header>
 
-      <main id="main-content" className="section-shell flex max-w-6xl flex-col gap-[120px] pb-[96px] pt-[120px]">
+      <main id="main-content" className="section-shell flex max-w-6xl flex-col items-center gap-[120px] pb-[96px] pt-[120px] text-center">
         <section
           id="hero"
           className="relative flex flex-col items-center gap-10 overflow-hidden rounded-[24px] border border-[#404040] bg-[#1f1f1f]/70 p-10 text-center shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
@@ -172,12 +172,12 @@ export default function LandingPage(): JSX.Element {
               </span>
               <span>1,247 Warriors typing now</span>
             </div>
-            <h1 className="text-[48px] font-black leading-tight md:text-[64px] lg:text-[72px]">
+            <h1 className="text-title">
               <span className="animate-gradient gradient-text">Type Faster.</span>
               <br />
               <span className="text-[#ffd700]">Beat Waterloo.</span>
             </h1>
-            <p className="max-w-3xl text-xl text-[#e0e0e0]">
+            <p className="text-subtitle max-w-3xl text-[#e0e0e0]">
               Real-time typing races, competitive leaderboards, and exclusive badges for{' '}
               <span className="font-semibold text-[#ffd700]">UWaterloo students only.</span>
             </p>
@@ -213,9 +213,9 @@ export default function LandingPage(): JSX.Element {
           </div>
         </section>
 
-        <section id="how-it-works" className="flex flex-col items-center gap-8 text-center">
-          <h2 className="text-[36px] font-bold text-white">How it works</h2>
-          <p className="max-w-2xl text-[#a0a0a0]">
+        <section id="how-it-works" className="flex w-full flex-col items-center gap-8">
+          <h2 className="text-title text-[42px]">How it works</h2>
+          <p className="text-subtitle max-w-3xl">
             Sign up, sprint, and climb the leaderboard—all in under a minute.
           </p>
           <div className="grid w-full gap-6 md:grid-cols-3">
@@ -225,9 +225,9 @@ export default function LandingPage(): JSX.Element {
           </div>
         </section>
 
-        <section id="features" className="flex flex-col items-center gap-8 text-center">
-          <h2 className="text-[36px] font-bold text-white">Built for typists on a mission</h2>
-          <p className="max-w-2xl text-[#a0a0a0]">
+        <section id="features" className="flex w-full flex-col items-center gap-8">
+          <h2 className="text-title text-[42px]">Built for typists on a mission</h2>
+          <p className="text-subtitle max-w-3xl">
             Everything you need to compete, measure, and win—engineered for UW students.
           </p>
           <div className="grid w-full gap-6 md:grid-cols-2">
@@ -237,12 +237,11 @@ export default function LandingPage(): JSX.Element {
           </div>
         </section>
 
-        <section id="why-join" className="flex flex-col items-center gap-10">
+        <section id="why-join" className="flex w-full flex-col items-center gap-10">
           <GlassCard interactive={false} className="w-full max-w-3xl bg-[#262626] p-12 text-center">
-            <h2 className="text-[36px] font-bold text-white">Why Join WaterlooType?</h2>
-            <p className="mt-4 text-lg text-[#e0e0e0]">
-              Join hundreds of Warriors pushing their WPM, sharing wins, and unlocking badges—without leaving
-              the browser.
+            <h2 className="text-title text-[42px]">Why Join WaterlooType?</h2>
+            <p className="mt-4 text-subtitle text-[#e0e0e0]">
+              Join hundreds of Warriors pushing their WPM, sharing wins, and unlocking badges—without leaving the browser.
             </p>
             <div className="mt-10 grid gap-6 md:grid-cols-2">
               {WHY_ITEMS.map((item) => (
@@ -252,9 +251,9 @@ export default function LandingPage(): JSX.Element {
           </GlassCard>
         </section>
 
-        <section id="testimonial" className="flex flex-col items-center gap-8 rounded-[24px] border border-[#404040] bg-[#1f1f1f] p-12 text-center shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
+        <section id="testimonial" className="flex w-full flex-col items-center gap-8 rounded-[24px] border border-[#404040] bg-[#1f1f1f] p-12 text-center shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
           <Sparkles className="h-8 w-8 text-[#ffb300]" />
-          <p className="max-w-3xl text-[24px] italic text-[#e0e0e0]">
+          <p className="text-subtitle max-w-3xl italic text-[#e0e0e0]">
             “WaterlooType turned late-night study sessions into competitive typing sprints. We keep the leaderboard open in E7 just to see who can steal Diamond next.”
           </p>
           <div className="flex items-center gap-2 text-sm text-[#a0a0a0]">
@@ -262,16 +261,24 @@ export default function LandingPage(): JSX.Element {
               <Star key={idx} className="h-5 w-5 fill-[#ffb300] text-[#ffb300]" />
             ))}
           </div>
-          <p className="text-sm text-[#a0a0a0]">— Anonymous Diamond Tier Grinder, E7</p>
+          <p className="text-content text-sm">— Anonymous Diamond Tier Grinder, E7</p>
         </section>
 
-        <section id="faq" className="flex flex-col items-center gap-6 text-center">
-          <h2 className="text-[36px] font-bold text-white">FAQ</h2>
+        <section id="leaderboard" className="flex w-full flex-col items-center gap-8">
+          <h2 className="text-title text-[42px]">Live Leaderboard</h2>
+          <p className="text-subtitle max-w-3xl">
+            Preview the top Warriors and faculty averages. Sign in to challenge them in real time.
+          </p>
+          <Leaderboard />
+        </section>
+
+        <section id="faq" className="flex w-full flex-col items-center gap-6">
+          <h2 className="text-title text-[42px]">FAQ</h2>
           <div className="flex w-full flex-col gap-4">
             {FAQ_ITEMS.map((item) => (
               <GlassCard key={item.question} interactive={false} muted className="px-6 py-5 text-left">
-                <h3 className="text-lg font-semibold text-white">{item.question}</h3>
-                <p className="mt-2 text-sm text-[#a0a0a0]">{item.answer}</p>
+                <h3 className="text-subtitle text-white">{item.question}</h3>
+                <p className="text-content mt-2">{item.answer}</p>
               </GlassCard>
             ))}
           </div>

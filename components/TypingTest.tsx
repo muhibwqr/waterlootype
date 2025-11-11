@@ -151,24 +151,23 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
     <GlassCard
       tone="default"
       interactive={false}
-      className="relative mb-12 overflow-hidden p-6 text-center text-slate-100 shadow-2xl shadow-blue-500/15 md:p-10"
+      className="relative mb-12 flex flex-col items-center overflow-hidden p-6 text-center text-slate-100 shadow-2xl shadow-blue-500/15 md:p-10"
     >
       <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-blue-600/15 blur-3xl" aria-hidden />
       <div className="absolute -bottom-20 -left-16 h-52 w-52 rounded-full bg-blue-500/10 blur-3xl" aria-hidden />
 
-      <header className="relative mb-8 flex flex-col items-center gap-6 text-center">
-        <div className="flex flex-col items-center">
+      <header className="relative mb-8 flex w-full flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-3">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#404040] bg-[#262626] px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#e0e0e0]">
             <Zap className="h-3.5 w-3.5 text-[#ffb300]" />
             Live Typing Test
           </div>
-          <h2 className="mt-5 text-3xl font-semibold text-white sm:text-4xl">WaterlooWorks Sprint</h2>
-          <p className="mt-2 max-w-2xl text-sm text-[#e0e0e0]">
-            Lock in, focus on precision, and let speed follow. Scores update in real time—your next personal
-            best is a reset away.
+          <h2 className="text-title text-[40px]">WaterlooWorks Sprint</h2>
+          <p className="text-subtitle max-w-2xl text-[#e0e0e0]">
+            Lock in, focus on precision, and let speed follow. Scores update in real time—your next personal best is a reset away.
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="grid w-full max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
           <StatTile label="Current WPM" value={Math.round(wpm)} accent="from-[#ffb300] to-[#ff8f00]" />
           <StatTile label="Accuracy" value={`${accuracy.toFixed(1)}%`} accent="from-[#ffd54f] to-[#ffb300]" />
           <StatTile label="Elapsed" value={`${pad(minutes)}:${pad(seconds)}`} accent="from-[#6d6d6d] to-[#ffb300]" />
@@ -176,11 +175,7 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
         </div>
       </header>
 
-      <GlassCard
-        interactive={false}
-        muted
-        className="relative p-6 shadow-inner shadow-slate-900"
-      >
+      <GlassCard interactive={false} muted className="relative w-full max-w-3xl p-6 shadow-inner shadow-slate-900">
         <div className="mb-4 flex flex-col items-center gap-2 text-xs uppercase tracking-[0.3em] text-[#a0a0a0] sm:flex-row sm:justify-between">
           <span>Waterloo-themed passage</span>
           <span className="inline-flex items-center gap-2 font-semibold text-[#ffb300]">
@@ -235,7 +230,7 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
         </div>
       </GlassCard>
 
-      <footer className="relative mt-8 flex flex-col items-center gap-3 text-sm sm:flex-row sm:justify-between sm:gap-4">
+      <footer className="relative mt-8 flex w-full max-w-3xl flex-col items-center gap-3 text-sm sm:flex-row sm:justify-between sm:gap-4">
         <div className="flex flex-wrap justify-center gap-2">
           <button
             onClick={reset}

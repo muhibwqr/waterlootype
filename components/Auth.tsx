@@ -74,10 +74,10 @@ export default function Auth(): JSX.Element {
               <div className="flex h-14 w-14 items-center justify-center rounded-[16px] bg-[#2d2d2d] shadow-[0_10px_24px_rgba(0,0,0,0.35)]">
                 <Sparkles className="h-6 w-6 text-[#ffb300]" />
               </div>
-              <h1 className="text-3xl font-semibold text-white sm:text-4xl">
+              <h1 className="text-title text-[40px]">
                 Join the fastest students at <span className="gradient-text">Waterloo</span>
               </h1>
-              <p className="text-sm text-[#e0e0e0]">
+              <p className="text-subtitle text-[#e0e0e0]">
                 Sign up with your @uwaterloo.ca email to enter real-time typing showdowns, unlock badges, and keep climbing the leaderboard.
               </p>
             </header>
