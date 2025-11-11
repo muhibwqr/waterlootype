@@ -80,10 +80,10 @@ export default function LandingPage(): JSX.Element {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-slate-950 to-slate-900 text-slate-100">
-      <header className="sticky top-0 z-30 border-b border-slate-800/60 bg-black/40 backdrop-blur">
-        <div className="section-shell flex items-center justify-between py-4">
+      <header className="sticky top-0 z-30 border-b border-slate-800/60 bg-black/60 backdrop-blur">
+        <div className="section-shell flex max-w-5xl items-center justify-between py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 shadow-lg shadow-blue-500/30">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-500 shadow-lg shadow-blue-500/40">
               <Keyboard className="h-5 w-5 text-white" />
             </div>
             <div>
@@ -102,7 +102,7 @@ export default function LandingPage(): JSX.Element {
             </button>
             <button
               onClick={() => setShowAuth(true)}
-              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-purple-500/40 transition hover:scale-[1.02]"
+              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-500 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/40 transition hover:scale-[1.03]"
             >
               <Rocket className="h-4 w-4" />
               Get Started
@@ -111,47 +111,47 @@ export default function LandingPage(): JSX.Element {
         </div>
       </header>
 
-      <main className="section-shell flex flex-col gap-20 pb-24 pt-16 lg:pt-24">
-        <section className="grid items-center gap-12 lg:grid-cols-[1.25fr,1fr]">
-          <div>
+      <main className="section-shell flex max-w-5xl flex-col items-center gap-20 pb-20 pt-14 text-center">
+        <section className="flex w-full flex-col items-center gap-12">
+          <div className="flex flex-col items-center">
             <div className="section-badge">
               <Sparkles className="h-3.5 w-3.5 text-blue-400" />
               Built for Warriors
             </div>
-            <h1 className="mt-6 text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="mt-6 max-w-3xl text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
               Fastest Fingers at Waterloo? Prove it on <span className="gradient-text">WaterlooType</span>!
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-slate-300">
               Compete with fellow UW students in real-time typing tests, track your WPM and accuracy, and climb
               the leaderboard. Only @uwaterloo.ca emails can join.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center sm:gap-5">
               <button
                 onClick={() => setShowAuth(true)}
-                className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 px-6 py-3 text-base font-semibold text-white shadow-xl shadow-purple-500/40 transition hover:scale-[1.02]"
+                className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-500 px-6 py-3 text-base font-semibold text-white shadow-xl shadow-blue-500/40 transition hover:scale-[1.03]"
               >
                 <Rocket className="h-5 w-5" />
                 Sign Up with Waterloo Email
               </button>
               <button
                 onClick={() => setShowAuth(true)}
-                className="group flex items-center justify-center gap-2 rounded-2xl border border-slate-700/60 px-6 py-3 text-base font-semibold text-slate-300 transition hover:border-blue-500/60 hover:text-white"
+                className="group flex items-center justify-center gap-2 rounded-2xl border border-slate-700/60 px-6 py-3 text-base font-semibold text-slate-200 transition hover:border-blue-500/60 hover:text-white"
               >
                 Explore the experience
                 <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
               </button>
             </div>
-            <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-400">
-              <span className="inline-flex items-center gap-1 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1">
-                <Shield className="h-4 w-4 text-blue-300" />
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-slate-400">
+              <span className="inline-flex items-center gap-1 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-blue-200">
+                <Shield className="h-4 w-4" />
                 @uwaterloo.ca required
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1">
-                <Sparkles className="h-4 w-4 text-purple-300" />
+              <span className="inline-flex items-center gap-1 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-blue-200">
+                <Sparkles className="h-4 w-4" />
                 Free forever
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1">
-                <Rocket className="h-4 w-4 text-pink-300" />
+              <span className="inline-flex items-center gap-1 rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-blue-200">
+                <Rocket className="h-4 w-4" />
                 Built by Warriors
               </span>
             </div>
@@ -159,14 +159,14 @@ export default function LandingPage(): JSX.Element {
           <HeroShowcase />
         </section>
 
-        <section className="grid gap-6 lg:grid-cols-3">
+        <section className="grid w-full max-w-4xl gap-6 sm:grid-cols-2">
           {FEATURES.map((feature) => (
             <FeatureCard key={feature.title} {...feature} />
           ))}
         </section>
 
-        <section className="grid gap-10 lg:grid-cols-[1.1fr,1fr]">
-          <GlassCard muted className="p-8 shadow-2xl shadow-blue-500/10">
+        <section className="grid w-full max-w-4xl gap-8 lg:grid-cols-2">
+          <GlassCard muted className="p-8 text-center shadow-2xl shadow-blue-500/10">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-300/70">
               How it works
             </p>
@@ -181,8 +181,8 @@ export default function LandingPage(): JSX.Element {
               ))}
             </div>
           </GlassCard>
-          <GlassCard tone="primary" className="p-8 shadow-2xl shadow-purple-500/10">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-purple-300/70">Tiers</p>
+          <GlassCard tone="primary" className="p-8 text-center shadow-2xl shadow-blue-500/15">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-200/80">Tiers</p>
             <h3 className="mt-4 text-3xl font-bold text-white sm:text-4xl">Earn your badge</h3>
             <p className="mt-3 text-base text-slate-300">
               Every score unlocks a new tier. Keep improving to climb from Warrior to Diamond and make your
@@ -196,7 +196,7 @@ export default function LandingPage(): JSX.Element {
           </GlassCard>
         </section>
 
-        <section className="rounded-3xl border border-slate-800 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 p-12 text-center shadow-2xl shadow-blue-500/20">
+        <section className="w-full rounded-3xl border border-slate-800 bg-gradient-to-r from-blue-600/20 via-blue-500/10 to-indigo-600/20 p-12 text-center shadow-2xl shadow-blue-600/20">
           <div className="mx-auto max-w-3xl">
             <h3 className="text-3xl font-bold text-white sm:text-4xl">
               Ready to out-type every co-op hopeful on campus?
@@ -208,14 +208,14 @@ export default function LandingPage(): JSX.Element {
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <button
                 onClick={() => setShowAuth(true)}
-                className="flex min-w-[220px] items-center justify-center gap-2 rounded-2xl bg-white/10 px-6 py-3 text-base font-semibold text-white backdrop-blur transition hover:bg-white/20"
+                className="flex min-w-[220px] items-center justify-center gap-2 rounded-2xl bg-blue-500/20 px-6 py-3 text-base font-semibold text-white backdrop-blur transition hover:bg-blue-500/30"
               >
                 <Rocket className="h-5 w-5" />
                 Start Typing Now
               </button>
               <button
                 onClick={() => setShowAuth(true)}
-                className="flex min-w-[220px] items-center justify-center gap-2 rounded-2xl border border-white/20 px-6 py-3 text-base font-semibold text-slate-200 transition hover:border-white/40 hover:text-white"
+                className="flex min-w-[220px] items-center justify-center gap-2 rounded-2xl border border-white/20 px-6 py-3 text-base font-semibold text-slate-200 transition hover:border-blue-400/60 hover:text-white"
               >
                 <ArrowRight className="h-4 w-4" />
                 See Leaderboard
@@ -248,9 +248,9 @@ export default function LandingPage(): JSX.Element {
 
 function HeroShowcase() {
   return (
-    <div className="relative">
-      <div className="absolute -inset-6 rounded-3xl bg-gradient-to-r from-yellow-500/20 via-amber-500/20 to-rose-500/20 blur-3xl" />
-      <GlassCard tone="primary" className="relative overflow-hidden p-6 text-sm text-slate-200 shadow-2xl shadow-blue-500/10">
+    <div className="relative w-full max-w-3xl">
+      <div className="absolute -inset-6 rounded-3xl bg-gradient-to-r from-blue-600/25 via-blue-500/15 to-indigo-600/25 blur-3xl" />
+      <GlassCard tone="primary" className="relative overflow-hidden p-6 text-sm text-slate-200 shadow-2xl shadow-blue-600/20">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900">
@@ -261,7 +261,7 @@ function HeroShowcase() {
               <p className="text-xs text-slate-400">UW campus energy</p>
             </div>
           </div>
-          <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white">
+          <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
             Glass UI preview
           </span>
         </div>
@@ -319,8 +319,8 @@ function StepCard({
   description: string
 }) {
   return (
-    <GlassCard muted className="flex items-start gap-5 p-5">
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/30 via-purple-500/30 to-pink-500/30 text-sm font-semibold text-blue-200">
+    <GlassCard muted className="flex items-center gap-5 p-5 text-left">
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600/50 via-blue-500/30 to-transparent text-sm font-semibold text-blue-100">
         {number}
       </div>
       <div>
@@ -342,7 +342,7 @@ function TierCard({
 }) {
   return (
     <GlassCard muted className="flex items-center gap-4 p-4">
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950/70 text-purple-200">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950/70 text-blue-200">
         {icon}
       </div>
       <div>

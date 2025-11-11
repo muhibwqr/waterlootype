@@ -91,9 +91,9 @@ export default function Leaderboard(): JSX.Element {
 
   const getRankIcon = (rank: number): ReactNode => {
     if (rank === 1) return <Trophy className="h-5 w-5 text-blue-200" />
-    if (rank === 2) return <Medal className="h-5 w-5 text-purple-200" />
-    if (rank === 3) return <Sparkles className="h-5 w-5 text-amber-200" />
-    return <span className="text-xs font-semibold text-slate-300">#{rank}</span>
+    if (rank === 2) return <Medal className="h-5 w-5 text-sky-200" />
+    if (rank === 3) return <Sparkles className="h-5 w-5 text-indigo-200" />
+    return <span className="text-xs font-semibold text-slate-200">#{rank}</span>
   }
 
   const rankTone = (rank?: number): 'default' | 'primary' | 'accent' => {
@@ -130,12 +130,12 @@ export default function Leaderboard(): JSX.Element {
   }
 
   return (
-    <GlassCard interactive={false} muted className="relative p-8 text-slate-100 shadow-2xl shadow-purple-500/10">
-      <div className="absolute inset-x-6 top-6 -z-10 h-32 rounded-3xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-3xl" aria-hidden />
+    <GlassCard interactive={false} muted className="relative p-8 text-center text-slate-100 shadow-2xl shadow-blue-500/15">
+      <div className="absolute inset-x-6 top-6 -z-10 h-32 rounded-3xl bg-gradient-to-r from-blue-600/20 via-blue-500/15 to-indigo-600/20 blur-3xl" aria-hidden />
 
-      <header className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/60 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-blue-200/80">
+      <header className="flex flex-col items-center gap-6 text-center">
+        <div className="flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/70 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-blue-200/80">
             <Trophy className="h-3.5 w-3.5 text-blue-300" />
             Leaderboard Live
           </div>
@@ -144,21 +144,23 @@ export default function Leaderboard(): JSX.Element {
             Track the fastest typists on campus and see which faculty is leading the charge.
           </p>
         </div>
-        <button
-          onClick={() => setActiveTab(activeTab === 'individuals' ? 'faculties' : 'individuals')}
-          className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-blue-500/60 hover:text-white"
-        >
-          Toggle view
-          <ArrowRight className="h-4 w-4" />
-        </button>
+        <div className="flex justify-center">
+          <button
+            onClick={() => setActiveTab(activeTab === 'individuals' ? 'faculties' : 'individuals')}
+            className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-blue-500/60 hover:text-white"
+          >
+            Toggle view
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
       </header>
 
-      <div className="mt-8 flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
         <button
           onClick={() => setActiveTab('individuals')}
           className={`rounded-full px-4 py-2 transition ${
             activeTab === 'individuals'
-              ? 'bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30 text-white'
+              ? 'bg-gradient-to-r from-blue-500/30 via-blue-600/20 to-indigo-500/30 text-white'
               : 'border border-slate-800 text-slate-300 hover:border-blue-500/50 hover:text-white'
           }`}
         >
@@ -168,7 +170,7 @@ export default function Leaderboard(): JSX.Element {
           onClick={() => setActiveTab('faculties')}
           className={`rounded-full px-4 py-2 transition ${
             activeTab === 'faculties'
-              ? 'bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30 text-white'
+              ? 'bg-gradient-to-r from-blue-500/30 via-blue-600/20 to-indigo-500/30 text-white'
               : 'border border-slate-800 text-slate-300 hover:border-blue-500/50 hover:text-white'
           }`}
         >

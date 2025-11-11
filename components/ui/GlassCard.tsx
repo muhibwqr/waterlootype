@@ -13,8 +13,8 @@ export interface GlassCardProps extends HTMLAttributes<HTMLDivElement> {
 
 const toneStyles: Record<GlassCardTone, string> = {
   default: 'bg-white/5 border-white/10',
-  primary: 'bg-gradient-to-br from-blue-500/15 via-purple-500/15 to-cyan-500/10 border-blue-400/30',
-  accent: 'bg-gradient-to-br from-emerald-500/15 via-sky-500/10 to-teal-500/10 border-emerald-400/30',
+  primary: 'bg-gradient-to-br from-blue-500/20 via-sky-500/10 to-indigo-500/20 border-blue-400/40',
+  accent: 'bg-gradient-to-br from-cyan-500/15 via-blue-500/10 to-slate-900/40 border-cyan-400/40',
 }
 
 export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(function GlassCard(

@@ -151,14 +151,14 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
     <GlassCard
       tone="default"
       interactive={false}
-      className="relative mb-12 overflow-hidden p-6 text-slate-100 shadow-2xl shadow-blue-500/10 md:p-10"
+      className="relative mb-12 overflow-hidden p-6 text-center text-slate-100 shadow-2xl shadow-blue-500/15 md:p-10"
     >
-      <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-blue-500/10 blur-3xl" aria-hidden />
-      <div className="absolute -bottom-20 -left-16 h-52 w-52 rounded-full bg-purple-500/10 blur-3xl" aria-hidden />
+      <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-blue-600/15 blur-3xl" aria-hidden />
+      <div className="absolute -bottom-20 -left-16 h-52 w-52 rounded-full bg-blue-500/10 blur-3xl" aria-hidden />
 
-      <header className="relative mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/60 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-blue-200/80">
+      <header className="relative mb-8 flex flex-col items-center gap-6 text-center">
+        <div className="flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/70 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-blue-200/80">
             <Zap className="h-3.5 w-3.5 text-blue-300" />
             Live Typing Test
           </div>
@@ -168,11 +168,11 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
             best is a reset away.
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:flex sm:items-center sm:gap-5">
-          <StatTile label="Current WPM" value={Math.round(wpm)} accent="from-blue-500 to-cyan-400" />
-          <StatTile label="Accuracy" value={`${accuracy.toFixed(1)}%`} accent="from-emerald-500 to-green-400" />
-          <StatTile label="Elapsed" value={`${pad(minutes)}:${pad(seconds)}`} accent="from-purple-500 to-pink-400" />
-          <StatTile label="Personal Best" value={bestWpm} accent="from-amber-500 to-orange-400" />
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <StatTile label="Current WPM" value={Math.round(wpm)} accent="from-blue-500 to-blue-400" />
+          <StatTile label="Accuracy" value={`${accuracy.toFixed(1)}%`} accent="from-cyan-500 to-blue-400" />
+          <StatTile label="Elapsed" value={`${pad(minutes)}:${pad(seconds)}`} accent="from-slate-500 to-blue-500" />
+          <StatTile label="Personal Best" value={bestWpm} accent="from-indigo-500 to-blue-400" />
         </div>
       </header>
 
@@ -181,7 +181,7 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
         muted
         className="relative p-6 shadow-inner shadow-slate-900"
       >
-        <div className="mb-4 flex items-center justify-between text-xs uppercase tracking-[0.3em] text-slate-400">
+        <div className="mb-4 flex flex-col items-center gap-2 text-xs uppercase tracking-[0.3em] text-slate-400 sm:flex-row sm:justify-between">
           <span>Waterloo-themed passage</span>
           <span className="inline-flex items-center gap-2 font-semibold text-blue-300">
             <Shield className="h-4 w-4" />
@@ -196,8 +196,8 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
             if (typedChar != null) {
               className =
                 typedChar === char
-                  ? 'text-emerald-400'
-                  : 'rounded bg-red-500/20 px-[1px] text-red-400 shadow-inner shadow-red-500/40'
+                  ? 'text-blue-200'
+                  : 'rounded bg-blue-500/20 px-[1px] text-white shadow-inner shadow-blue-500/40'
             }
 
             return (
@@ -222,7 +222,7 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
         <div className="mt-6">
           <div className="relative h-2 overflow-hidden rounded-full bg-slate-800/70">
             <div
-              className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-all"
+              className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-500 transition-all"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -235,8 +235,8 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
         </div>
       </GlassCard>
 
-      <footer className="relative mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap gap-2">
+      <footer className="relative mt-8 flex flex-col items-center gap-3 text-sm sm:flex-row sm:justify-between sm:gap-4">
+        <div className="flex flex-wrap justify-center gap-2">
           <button
             onClick={reset}
             className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-blue-500/60 hover:text-white"
@@ -253,20 +253,20 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
               setMessage(null)
               inputRef.current?.focus()
             }}
-            className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-purple-500/60 hover:text-white"
+            className="inline-flex items-center gap-2 rounded-2xl border border-slate-800 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-blue-400/60 hover:text-white"
           >
             Reset Run
           </button>
           <button
             onClick={submitScore}
             disabled={saving}
-            className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-purple-500/30 transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:scale-[1.03] disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Trophy className="h-4 w-4" />
             {saving ? 'Submitting…' : 'Submit Score'}
           </button>
         </div>
-        <div className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-2 text-sm text-slate-300">
+        <div className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-2 text-slate-300">
           <Shield className="h-4 w-4 text-blue-300" />
           Stay relaxed, lead with accuracy. Speed follows focus.
         </div>
