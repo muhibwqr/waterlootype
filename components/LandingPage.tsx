@@ -2,39 +2,43 @@
 
 import { useState, type ReactNode } from 'react'
 import {
+  Activity,
   ArrowRight,
   GraduationCap,
   Keyboard,
   Medal,
   Rocket,
+  Share2,
   Shield,
   Sparkles,
   Trophy,
-  Zap,
 } from 'lucide-react'
 import Auth from './Auth'
 import { GlassCard } from '@/components/ui/GlassCard'
 
 const FEATURES = [
   {
-    icon: <Zap className="h-5 w-5" />,
-    title: 'Test Your Speed',
-    description:
-      'Practice with Waterloo-themed prompts about co-op, internships, and the Cali grind.',
+    icon: <Shield className="h-5 w-5" />,
+    title: 'Supabase-Powered Security',
+    description: 'Verify instantly with @uwaterloo.ca emails—no spambots, just Warriors.',
     tone: 'primary' as const,
   },
   {
-    icon: <Trophy className="h-5 w-5" />,
-    title: 'Compete & Climb',
-    description:
-      'Chase the leaderboard and unlock Diamond, Gold, and Bronze bragging rights.',
+    icon: <Activity className="h-5 w-5" />,
+    title: 'Real-Time Typing Stats',
+    description: 'Track live WPM, accuracy, and streak stats as you sprint through prompts.',
     tone: 'default' as const,
   },
   {
-    icon: <GraduationCap className="h-5 w-5" />,
-    title: 'Faculty Pride',
-    description:
-      'See which faculty is topping the charts in real time and represent your crew.',
+    icon: <Trophy className="h-5 w-5" />,
+    title: 'Leaderboard Glory',
+    description: 'Climb ranks and unlock Diamond, Gold, and Bronze badges worth bragging about.',
+    tone: 'default' as const,
+  },
+  {
+    icon: <Share2 className="h-5 w-5" />,
+    title: 'Shareable Wins',
+    description: 'Post your best runs, challenge classmates, and spark a typing rivalry.',
     tone: 'accent' as const,
   },
 ]
@@ -115,11 +119,11 @@ export default function LandingPage(): JSX.Element {
               Built for Warriors
             </div>
             <h1 className="mt-6 text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
-              Prove your typing speed, conquer the leaderboard, flex your faculty.
+              Fastest Fingers at Waterloo? Prove it on <span className="gradient-text">WaterlooType</span>!
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-slate-300">
-              WaterlooType blends competitive typing with co-op energy. Sharpen your skills, climb the live
-              leaderboard, and show Silicon Valley why Warriors lead the pack.
+              Compete with fellow UW students in real-time typing tests, track your WPM and accuracy, and climb
+              the leaderboard. Only @uwaterloo.ca emails can join.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
               <button
@@ -127,13 +131,13 @@ export default function LandingPage(): JSX.Element {
                 className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 px-6 py-3 text-base font-semibold text-white shadow-xl shadow-purple-500/40 transition hover:scale-[1.02]"
               >
                 <Rocket className="h-5 w-5" />
-                Start Typing — it’s free
+                Sign Up with Waterloo Email
               </button>
               <button
                 onClick={() => setShowAuth(true)}
                 className="group flex items-center justify-center gap-2 rounded-2xl border border-slate-700/60 px-6 py-3 text-base font-semibold text-slate-300 transition hover:border-blue-500/60 hover:text-white"
               >
-                Preview the test
+                Explore the experience
                 <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
               </button>
             </div>
@@ -152,34 +156,7 @@ export default function LandingPage(): JSX.Element {
               </span>
             </div>
           </div>
-          <div className="relative">
-            <div className="absolute -inset-6 rounded-3xl bg-gradient-to-r from-blue-500/40 via-purple-500/30 to-pink-500/30 blur-3xl"></div>
-            <GlassCard tone="primary" className="relative p-6 text-sm text-slate-200 shadow-2xl shadow-blue-500/10">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900">
-                    <Keyboard className="h-5 w-5 text-blue-300" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-white">Live Test Preview</p>
-                    <p className="text-xs text-slate-400">WaterlooWorks edition</p>
-                  </div>
-                </div>
-                <span className="rounded-full bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-200">
-                  Demo run
-                </span>
-              </div>
-              <p className="mt-5 rounded-2xl border border-slate-800 bg-slate-900/80 p-5 text-sm leading-relaxed text-slate-300">
-                Your co-op advisor said apply early, apply often. You open WaterlooWorks and start the Cali or
-                bust grind. Fingers fly, focus locked, Warriors rise.
-              </p>
-              <div className="mt-6 grid grid-cols-3 gap-3 text-center text-sm">
-                <Stat label="WPM" value="132" />
-                <Stat label="Accuracy" value="98%" />
-                <Stat label="Time" value="00:57" />
-              </div>
-            </GlassCard>
-          </div>
+          <HeroShowcase />
         </section>
 
         <section className="grid gap-6 lg:grid-cols-3">
@@ -265,6 +242,47 @@ export default function LandingPage(): JSX.Element {
           </div>
         </div>
       </footer>
+    </div>
+  )
+}
+
+function HeroShowcase() {
+  return (
+    <div className="relative">
+      <div className="absolute -inset-6 rounded-3xl bg-gradient-to-r from-yellow-500/20 via-amber-500/20 to-rose-500/20 blur-3xl" />
+      <GlassCard tone="primary" className="relative overflow-hidden p-6 text-sm text-slate-200 shadow-2xl shadow-blue-500/10">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900">
+              <Keyboard className="h-5 w-5 text-blue-300" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-white">Live Test Spotlight</p>
+              <p className="text-xs text-slate-400">UW campus energy</p>
+            </div>
+          </div>
+          <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white">
+            Glass UI preview
+          </span>
+        </div>
+        <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-black/40">
+          <div className="relative h-48">
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-60" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-300">Sample Run</p>
+              <p className="text-lg font-semibold text-white">
+                “Engineering squad sprinted to <span className="gradient-text">143 WPM</span> in 60 seconds.”
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-6 grid grid-cols-3 gap-3 text-center text-sm">
+          <Stat label="Peak WPM" value="143" />
+          <Stat label="Accuracy" value="98%" />
+          <Stat label="Rank" value="Diamond" />
+        </div>
+      </GlassCard>
     </div>
   )
 }
