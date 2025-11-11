@@ -1,7 +1,7 @@
 export interface LeaderboardEntry {
   id: string
-  user_id: string
-  email: string
+  user_id?: string | null
+  email?: string | null
   program?: string | null
   faculty?: string | null
   wpm: number

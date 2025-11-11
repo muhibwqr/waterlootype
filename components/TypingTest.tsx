@@ -210,7 +210,7 @@ export default function TypingTest({ user }: TypingTestProps): JSX.Element {
           onPaste={(event) => event.preventDefault()}
           disabled={finished}
           placeholder={finished ? 'Great work! Reset to run it back.' : 'Start typing the passage above…'}
-          className="focus-gold mt-6 w-full resize-none rounded-2xl border border-[#404040] bg-[#1a1a1a] p-5 font-mono text-base text-white shadow-lg shadow-[rgba(0,0,0,0.45)] transition focus:border-[#ffb300] md:text-lg"
+          className="focus-gold mt-6 w-full resize-none rounded-2xl border border-[#404040] bg-[#1a1a1a] p-5 font-mono text-base text-white shadow-[rgba(0,0,0,0.45)] transition focus:border-[#ffb300] md:text-lg"
           rows={5}
         />
 

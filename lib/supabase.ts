@@ -1,7 +1,4 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
+export { getSupabaseClient, supabase } from '../src/integrations/supabase/client'
+export type { Database } from '../src/integrations/supabase/types'
 
-const supabaseUrl: string = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseAnonKey: string = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key'
-
-export const supabase: SupabaseClient = createClient(supabaseUrl, supabaseAnonKey)
 
